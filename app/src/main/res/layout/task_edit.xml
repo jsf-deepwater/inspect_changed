@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/sizeStandard"
+    android:background="@drawable/task_item_frame"
+    >
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_index"
+        android:text="1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        />
+
+    <ImageView
+        android:id="@+id/top_dividerLine"
+        style="@style/horizontal_line"
+        android:layout_below="@id/tv_index"
+        />
+    <!--device id-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_d_id"
+        android:text="@string/d_index"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/top_dividerLine"
+        />
+    <EditText
+        style="@style/task_content"
+        android:layout_width="@dimen/double_content_width"
+        android:id="@+id/tv_d_id_str"
+        android:hint="@string/d_index"
+        android:layout_toRightOf="@id/tv_d_id"
+        android:layout_alignBottom="@id/tv_d_id"
+        />
+    <!--device name-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_d_name"
+        android:text="@string/d_name"
+        android:layout_alignBottom="@id/tv_d_id"
+        android:layout_toRightOf="@id/tv_d_id_str"
+        />
+    <TextView
+        style="@style/task_content"
+        android:id="@+id/tv_d_name_str"
+        android:hint="@string/d_name"
+        android:layout_toRightOf="@id/tv_d_name"
+        android:layout_alignBottom="@id/tv_d_name"
+        android:layout_below="@id/top_dividerLine"
+        />
+
+    <!-- task type-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_task_type"
+        android:text="@string/task_type"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/tv_d_name"
+        />
+    <TextView
+        style="@style/task_content"
+        android:layout_width="@dimen/double_content_width"
+        android:id="@+id/tv_task_type_str"
+        android:hint="@string/task_type"
+        android:layout_alignBottom="@id/tv_task_type"
+        android:layout_toRightOf="@id/tv_task_type"
+        />
+    <!-- task name-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_task_name"
+        android:text="@string/task_name"
+        android:layout_below="@id/tv_d_name"
+        android:layout_alignBottom="@id/tv_task_type"
+        android:layout_toRightOf="@id/tv_task_type_str"
+        />
+    <TextView
+        style="@style/task_content"
+        android:id="@+id/tv_task_name_str"
+        android:text="@string/task_name"
+        android:layout_alignBottom="@id/tv_task_name"
+        android:layout_toRightOf="@id/tv_task_name"
+        />
+    <!--scheduler time-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_scheduler_time"
+        android:text="@string/task_scheduler_time"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/tv_task_type"
+        />
+    <TextView
+        style="@style/task_content"
+        android:layout_width="@dimen/double_content_width"
+        android:id="@+id/tv_scheduler_time_str"
+        android:hint="@string/task_scheduler_time"
+        android:layout_alignBottom="@id/tv_scheduler_time"
+        android:layout_toRightOf="@id/tv_scheduler_time"
+        />
+
+    <ImageView
+        android:id="@+id/bottom_dividerLine"
+        style="@style/horizontal_line"
+        android:layout_below="@id/tv_scheduler_time"
+        />
+
+    <EditView
+        style="@style/task_content"
+        android:layout_height="120dp"
+        android:layout_width="match_parent"
+        android:layout_below="@id/bottom_dividerLine"
+        android:id="@+id/et_desc"
+        android:hint="@string/d_index"
+        />
+</RelativeLayout>

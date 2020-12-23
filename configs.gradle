@@ -1,0 +1,39 @@
+ext{
+    version=[
+                kotlinVersion              :'1.3.72',
+                ktxVersion                 :"1.3.0",
+                buildToolsVersion          :"28.0.2",
+                minSdkVersion              :23,
+                compileSdkVersion          :28,
+                targetSdkVersion           :27,
+                supportLibVersion          :"27.1.1",
+                adx_compatVersion          :"1.1.0",
+                materialVersion            :"1.1.0",
+                constraintLayoutVersion    :"1.1.3",
+                navigationVersion          :"2.3.0",
+                navigation_ui_ktxVersion   :"2.3.0",
+                junitVersion               :"4.12",
+                android_junitVersion       :"1.1.1",
+                testRunnerVersion          :"1.0.2",
+                testEspressoVersion        :"3.0.2",
+
+    ]
+
+    dependencies=[
+            kotlin                     : "org.jetbrains.kotlin:kotlin-stdlib:$version.kotlinVersion",
+            ktx                        : "androidx.core:core-ktx:$version.ktxVersion",
+//            appcompat                  : "androidx.appcompat:appcompat:$version.adx_compatVersion",
+            support_compat             :"com.android.support:appcompat-v7:${version.supportLibVersion}",
+            material                   : "com.google.android.material:material:$version.materialVersion",
+            constraintlayout           : "androidx.constraintlayout:constraintlayout:$version.constraintLayoutVersion",
+            navigation                 : "androidx.navigation:navigation-fragment-ktx:$version.navigationVersion",
+            navigation_ui_ktx          : "androidx.navigation:navigation-ui-ktx:$version.navigation_ui_ktxVersion",
+
+            junit                      : "junit:junit:$version.junitVersion",
+            androidEspresso            : "com.android.support.test.espresso:espresso-core:$version.testEspressoVersion",
+            androidTestRuner          :"com.android.support.test:runner:$version.testRunnerVersion",
+            androidJunit              : "androidx.test.ext:junit:$version.android_junitVersion",
+
+    ]
+
+}

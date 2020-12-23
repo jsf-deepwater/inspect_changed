@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color2"
+    >
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigation_bar_height_top"
+        android:layout_alignParentTop="true"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/sizeStandard"
+            android:text="@string/user_settings" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_margin="@dimen/basic_bt_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sizeNormalText"
+        android:id="@+id/tv_user_info"
+        android:layout_below="@id/rl_title"
+        android:layout_alignParentLeft="true"
+        />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_margin="@dimen/basic_bt_margin"
+    >
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="@dimen/login_edit_height"
+        android:layout_margin="@dimen/basic_bt_margin"
+        android:gravity="center"
+        android:textSize="@dimen/txt_login_btn"
+        android:id="@+id/btn_sync"
+        android:text="@string/synchronize"
+        android:background="@drawable/logout_btn_frame"
+        android:layout_marginBottom="@dimen/basic_bt_margin"
+        />
+    <Button
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="@dimen/login_edit_height"
+        android:layout_margin="@dimen/basic_bt_margin"
+        android:gravity="center"
+        android:textSize="@dimen/txt_login_btn"
+        android:id="@+id/btn_logout"
+        android:text="@string/logout"
+        android:background="@drawable/logout_btn_frame"
+        android:layout_marginBottom="@dimen/basic_bt_margin"
+        />
+
+</LinearLayout>
+
+</RelativeLayout>

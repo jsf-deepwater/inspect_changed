@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="base_dialog" parent="AlertDialog.AppCompat.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <!--为这个样式设置一个默认的属性,否则引用这个样式的时候会因为属性缺少导致错误,这里默认为other样式-->
+        <item name="android:windowBackground">@color/def_text_color</item>
+    </style>
+
+    <!--背景需要重新写-->
+    <style name="button_dialog">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">39dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/def_text_color</item>
+    </style>
+
+</resources>

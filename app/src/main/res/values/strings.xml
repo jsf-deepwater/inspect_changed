@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">蓝汛维保</string>
+    <string name="hint_input_phone">请输入用户名</string>
+    <string name="hint_input_verification_code">请输入密码</string>
+    <string name="login_failed">用户名或密码错误！</string>
+    <string name="btn_login">登录</string>
+    <string name="next">下一步</string>
+    <string name="sys_out">退出</string>
+    <string name="confirm">确定</string>
+    <string name="menu_more">更多</string>
+    <string name="logout">登出</string>
+    <string name="un_complete">您还有信息未填写完整！</string>
+    <string name="btn_get_verification_code">获取验证码</string>
+    <string name="valid_phone_number">请输入合法的手机号码！</string>
+    <string name="sms_failed">发送短信失败！</string>
+    <string name="verification_error">验证码错误！</string>
+    <string name="save_failed">抱歉，无法连接到服务器！</string>
+
+    <!--new content-->
+    <string name="task_list">表单总览</string>
+    <string name="search">搜索</string>
+    <string name="task_none">未找到任务！</string>
+    <string name="user_settings">用户信息</string>
+    <string name="d_name">设备名称</string>
+    <string name="d_index">设备编号</string>
+    <string name="task_name">表单名称</string>
+    <string name="task_type">表单类别</string>
+    <string name="task_scheduler_time">计划时间</string>
+    <string name="task_complete_time">完成时间</string>
+    <string name="status">状态</string>
+    <string name="month">月度</string>
+    <string name="quarterly">季度</string>
+    <string name="year">年度</string>
+
+    <string name="type_unstart">未开始</string>
+    <string name="type_uncomplete">未完成</string>
+    <string name="type_uncommit">未提交</string>
+    <string name="type_delay">延迟</string>
+    <string name="type_err">异常</string>
+    <string name="type_complete">完成</string>
+    <string name="cache_commit">保存</string>
+    <string name="commit">提交</string>
+    <string name="err_commit">异常提交</string>
+    <string name="edit_text">填写表单</string>
+
+    <string name="scan_prompt">扫描设备</string>
+    <string name="scan_prompt2">请将二维码放入框内，即可开始扫描</string>
+    <string name="open_camera_faild">打开相机失败</string>
+    <string name="please_wait">请稍候...</string>
+    <string name="synchronize">同步</string>
+    <string name="sync_ok">数据同步成功！</string>
+    <string name="sync_err">数据同步失败！</string>
+
+    <string name="day_night">值班时间</string>
+    <string name="day_work">白班</string>
+    <string name="night_work">夜班</string>
+    <string name="time_err">现在还不是该计划的值班时间！</string>
+    <string name="no_perm_read_err">你不能查看和处理异常表单！</string>
+    <string name="scan_did_err">扫描的设备号与表单不符！</string>
+    <string-array name="task_type">
+        <item>月度</item>
+        <item>季度</item>
+        <item>年度</item>
+    </string-array>
+
+    <string name="task_pie">计划完成进度</string>
+    <string name="dis_info">用户名：%s\n姓名：%s\n工号：%s\n</string>
+</resources>

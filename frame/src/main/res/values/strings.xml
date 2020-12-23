@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">frame</string>
+
+    <!-- ble -->
+    <string name="warning">警告</string>
+    <string name="ble_unavailable">蓝牙不可用！</string>
+    <string name="ble_not_support">不支持的设备，低功耗蓝牙无法使用！</string>
+    <string name="get_it">了解了</string>
+    <string name="no_network">网络不可用！</string>
+
+
+<!--permission-->
+    <string name="permission_warning">提示</string>
+    <string name="permission_cancel">取消</string>
+    <string name="permission_confirm">确定</string>
+    <string name="permission_requestPermission_a">以下权限被拒绝了，请您到设置页面手动授权：\n%1$s</string>
+    <string name="permission_requestPermission_b">发生错误，以下权限申请失败，请您到设置页面手动授权：\n%1$s</string>
+    <string name="permission_requestPermission_c">需要以下权限才能继续运行：\n%1$s</string>
+</resources>

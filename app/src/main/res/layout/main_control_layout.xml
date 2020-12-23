@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/default_statusbar_height"
+    android:orientation="vertical"
+    tools:context="phy.jsf.MainActivity">
+
+    <FrameLayout
+        android:id="@id/fm_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <RadioGroup
+        android:id="@+id/group_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navigation_bar_height_bottom"
+        android:paddingTop="5dp"
+        android:background="@color/color18"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_main"
+            style="@style/bt_bottom_navigation"
+            android:drawableTop="@drawable/check_main"
+            android:checked="true"
+            />
+        <RadioButton
+            android:id="@+id/rb_chart"
+            style="@style/bt_bottom_navigation"
+            android:drawableTop="@drawable/check_chart" />
+        <RadioButton
+            android:id="@+id/rb_user"
+            style="@style/bt_bottom_navigation"
+            android:drawableTop="@drawable/check_user"
+            />
+
+
+    </RadioGroup>
+
+</LinearLayout>

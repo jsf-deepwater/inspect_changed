@@ -1,0 +1,141 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="android:fitsSystemWindows">true</item>
+        <item name="android:clipToPadding">true</item>-->
+        <!-- Customize your theme here. -->
+        <!--
+        <item name="colorPrimary">@color/colorPrimary</item>
+         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+         <item name="colorAccent">@color/colorAccent</item>
+         -->
+    </style>
+
+    <style name="AppTheme.launch">
+        <item name="android:windowBackground">@color/control_bg</item>
+    </style>
+
+    <style name="base_dialog" parent="AlertDialog.AppCompat.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <!--为这个样式设置一个默认的属性,否则引用这个样式的时候会因为属性缺少导致错误,这里默认为other样式-->
+        <item name="android:windowBackground">@color/color2</item>
+    </style>
+
+    <!--背景需要重新写-->
+    <style name="button_dialog">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/bt_height_dialog</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/color9</item>
+    </style>
+
+    <style name="horizontal_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@drawable/light_divider_line</item>
+    </style>
+
+    <style name="horizontal_line.lack">
+        <item name="android:layout_marginLeft">@dimen/sizeStandard</item>
+        <item name="android:layout_marginRight">@dimen/sizeStandard</item>
+    </style>
+
+    <style name="vertical_line">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/light_divider_line</item>
+    </style>
+
+    <style name="vertical_line.lack">
+        <item name="android:layout_marginTop">@dimen/sizeStandard</item>
+        <item name="android:layout_marginBottom">@dimen/sizeStandard</item>
+    </style>
+
+    <style name="bt_common">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/bt_height_common</item>
+        <item name="android:background">@drawable/bt_rect</item>
+        <item name="android:textColor">@color/bt_common</item>
+        <item name="android:layout_margin">@dimen/basic_bt_margin</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="bt_common.double">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_margin">@dimen/sizeSmall</item>
+    </style>
+
+    <style name="et_common">
+        <item name="android:background">@drawable/bt_rect</item>
+        <item name="android:layout_height">@dimen/et_height_common</item>
+    </style>
+
+    <style name="bt_common.login">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/bt_height_common</item>
+        <item name="android:background">@drawable/bt_rect_red</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="bt_bottom_navigation">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="cbox_event_selector">
+        <item name="android:layout_width">70dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_marginLeft">14dp</item>
+        <item name="android:background">@drawable/check_event_item</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/lv_item_selector_text</item>
+    </style>
+    
+    <style name="task_desc">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/task_item_h</item>
+        <item name="android:textColor">@color/color7</item>
+        <item name="android:textSize">@dimen/sizeMinText</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:layout_marginRight">@dimen/sizeMinimal</item>
+    </style>
+    <style name="task_content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/task_item_h</item>
+        <item name="android:textColor">@color/color8</item>
+        <item name="android:textSize">@dimen/sizeNormalText</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:background">@color/color2</item>
+    </style>
+
+    <style name="titlebar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/navigation_bar_height_top</item>
+        <item name="android:background">@color/blue_light</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+</resources>

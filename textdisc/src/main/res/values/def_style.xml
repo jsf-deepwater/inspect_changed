@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="def_firstDiscColor">#176CAE</color>
+    <color name="def_secondDisColor">#1A75BB</color>
+    <dimen name="def_firstDiscRadius">150dp</dimen>
+    <dimen name="def_secondDiscRadius">110dp</dimen>
+    <color name="def_checkedProgressColor">#FFFFFF</color>
+    <color name="def_unCheckedProgressColor">#20000000</color>
+    <dimen name="def_progressOutRadius">130dp</dimen>
+    <dimen name="def_progressStrokeWidth">15dp</dimen>
+    <integer name="def_progressDashCount">100</integer>
+    <color name="def_arrowColor">#20000000</color>
+    <color name="def_textColor">#FFFFFF</color>
+    <dimen name="def_textSize">80sp</dimen>
+    <dimen name="arrow_width">32.5dp</dimen>
+    <dimen name="arrow_height">12dp</dimen>
+    <dimen name="dash_line_width">1dp</dimen>
+    <dimen name="unit_textSize">32sp</dimen>
+    <dimen name="unit_interval">3dp</dimen>
+    <dimen name="extend_click_area">20dp</dimen>
+</resources>

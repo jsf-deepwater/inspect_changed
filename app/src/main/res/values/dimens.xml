@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_padding">20dp</dimen>
+    <!--以下所有尺寸稍后使用换算 360*640 换算-->
+    <!--login-->
+    <dimen name="login_edit_width">335dp</dimen>
+    <dimen name="login_edit_height">45dp</dimen>
+    <dimen name="txt_login_edit">14sp</dimen>
+    <dimen name="txt_login_btn">17sp</dimen>
+    <dimen name="btn_verification_code_width">73dp</dimen>
+    <dimen name="edit_frame_margin">10dp</dimen>
+    <dimen name="login_btn_margin">20dp</dimen>
+
+    <dimen name="login_logo_width">134dp</dimen>
+    <dimen name="login_logo_height">168dp</dimen>
+
+    <!--wp-->
+    <dimen name="sizeMinText">12sp</dimen>
+    <dimen name="sizeNormalText">14sp</dimen>
+    <dimen name="sizeLargeText">18sp</dimen>
+    <dimen name="task_item_h">32dp</dimen>
+    <dimen name="default_statusbar_height">30dp</dimen>
+    <dimen name="navigation_bar_height_bottom">43dp</dimen>
+    <dimen name="navigation_bar_height_top">49dp</dimen>
+    <dimen name="navigation_bar_height_top_with_statusbar">74dp</dimen>
+    <dimen name="dialog_title_height">51dp</dimen>
+    <dimen name="setting_item_min_height">40dp</dimen>
+    <dimen name="setting_item_header_height">79dp</dimen>
+    <dimen name="bt_height_dialog">39dp</dimen>
+    <dimen name="bt_height_common">43dp</dimen>
+    <dimen name="bt_width_common">120dp</dimen>
+    <dimen name="et_height_common">43dp</dimen>
+    <dimen name="et_height_min">30dp</dimen>
+    <dimen name="sizeLarge">23dp</dimen>
+    <dimen name="basic_bt_margin">23dp</dimen>
+    <dimen name="sizeStandard">16dp</dimen>
+    <dimen name="sizeMinimal">6dp</dimen>
+    <dimen name="sizeSmall">10dp</dimen>
+    <dimen name="double_content_width">120dp</dimen>
+    <dimen name="common_form_line_height">43dp</dimen>
+    <dimen name="edit_min_width">240dp</dimen>
+    <dimen name="multiple_height">100dp</dimen>
+</resources>

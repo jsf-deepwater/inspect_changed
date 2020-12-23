@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+
+def ver= this.rootProject.ext.version
+def deps=this.rootProject.ext.dependencies
+
+android {
+    compileSdkVersion ver.compileSdkVersion
+
+    defaultConfig {
+        applicationId "phy.jsf.inspect"
+        minSdkVersion ver.minSdkVersion
+        targetSdkVersion ver.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    useLibrary 'org.apache.http.legacy'
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation deps.kotlin
+    implementation deps.ktx
+//    implementation deps.appcompat
+    implementation deps.support_compat
+    testImplementation deps.junit
+    androidTestImplementation deps.androidJunit
+    androidTestImplementation deps.androidEspresso
+
+    implementation project(':camera')
+    implementation project(':commonui')
+    implementation project(':dashline')
+    implementation project(':datautil')
+    implementation project(':frame')
+//    implementation project(':permission')
+    implementation project(':textdisc')
+    implementation project(':zbarscan')
+
+    implementation ('com.yanzhenjie:permission:2.0.0-rc12'){
+        exclude group:'com.android.support'
+    }
+
+    //这里又有一个深坑：高版本的httpmime几乎无法在android上面使用.
+    implementation('org.apache.httpcomponents:httpmime:4.2.5') {
+        exclude module: 'httpclient'
+    }
+    implementation 'org.apache.httpcomponents:httpcore:4.2.5'
+    implementation 'com.github.luweibin3118:PieChartView:v1.1.2'
+}

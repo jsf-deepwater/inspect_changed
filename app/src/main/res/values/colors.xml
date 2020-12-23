@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!--隐私政策下划线颜色-->
+    <color name="blue_light">#35708e</color>
+
+    <!--spec-->
+    <color name="color2">#f7f7f7</color>
+    <color name="navigation_bg">#ffe9e7</color>
+    <color name="deep_line">#bfbfc0</color>
+    <color name="bt_border_dialog">#27000000</color>
+    <color name="bt_common">@color/color8</color>
+    <color name="color3">#efefef</color>
+    <color name="commonTextColor">@color/color7</color>
+    <color name="yellow">#77bb88</color>
+    <!--txt-->
+    <color name="color5">#fb948c</color>
+    <color name="color7">#6f6568</color>
+    <color name="color7_80">#cc6f6568</color>
+    <color name="color7_40">#ff6f6568</color>
+    <color name="color8">#343535</color>
+    <color name="color9">#000000</color>
+    <color name="color9_10">#1a000000</color>
+    <color name="txt_selector">#fb948c</color>
+
+    <color name="color12">#110a68</color>
+    <!--legend-->
+    <color name="color13">#fdbfb7</color>
+    <color name="color14">#497c7c</color>
+    <color name="color14_10">#1a497c7c</color>
+
+    <color name="color15">#fa723a</color>
+    <color name="color16">#231815</color>
+    <color name="color17">#fee7e4</color>
+    <color name="color18">#a2a2fd</color>
+
+    <color name="main_red">#fb948c</color>
+    <color name="main_red_deep">#fb5657</color>
+    <color name="data_indicator">@color/color7_80</color>
+    <color name="red">#ff0000</color>
+
+
+    <!--**********************pet***************************-->
+
+    <color name="btn_rect_blue">#0E6EB8</color>
+    <color name="common_pressed">#40000000</color>
+    <color name="btn_rect_pressed">#800E6EB8</color>
+    <color name="control_bg">#1A75BB</color>
+    <color name="txt_control">#FFFFFF</color>
+    <color name="txt_login_hint">#30181818</color>
+    <color name="txt_login_verification_code">#1A75BB</color>
+    <color name="pet_info_divider">#20181818</color>
+    <color name="step_bg">#1A75BB</color>
+
+    <color name="capture_shadow">#30000000</color>
+
+</resources>

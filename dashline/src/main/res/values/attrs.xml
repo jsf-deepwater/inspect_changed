@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DashLine">
+        <attr name="orientation" format="enum">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+        </attr>
+        <attr name="color" format="color" />
+        <attr name="dash_width" format="dimension" />
+        <attr name="dash_gap" format="dimension" />
+        <attr name="line_width" format="dimension" />
+    </declare-styleable>
+
+    <dimen name="def_dash_width">2dp</dimen>
+    <dimen name="def_dash_gap">3dp</dimen>
+    <dimen name="def_line_width">1dp</dimen>
+</resources>

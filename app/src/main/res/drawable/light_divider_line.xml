@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!--相对的来讲，这里的width指的是线条的宽度，height指的是长度-->
+    <!--必须确保width比height小，height可以省略-->
+    <!--使用这个line 的view的 width 必须大于这里定义的width，否则无法显示-->
+    <size
+        android:width="0.5dp"
+        android:height="0.5dp" />
+    <solid android:color="@color/color9_10" />
+    <!-- <size android:height="20dp" />-->
+</shape>
