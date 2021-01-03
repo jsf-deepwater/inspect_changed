@@ -224,7 +224,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (nextFragment == null) {
             nextFragment = (BaseFragment) Fragment.instantiate(this, clazz.getName(), bundle);
         }
-//        if (curFragment != nextFragment) {
+
+        if(bundle!=null){
+            Intent intent=new Intent();
+            intent.putExtras(bundle);
+            nextFragment.onGetAction(intent);
+        }
+        //        if (curFragment != nextFragment) {
         FragmentTransaction ft = fManager.beginTransaction();
         if (curFragment != null) {
             ft.hide(curFragment);

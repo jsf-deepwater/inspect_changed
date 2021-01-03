@@ -18,12 +18,15 @@ import x.datautil.L;
  * Created by phy on 2017/8/17.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements  BaseActivity.OnAction {
     protected BaseActivity mActivity;
     FragmentSecureHandler mSecureHandler;
 
     protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Bundle bundle) {
         return mActivity.showFragment(clazz, bundle, true);
+    }
+    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Bundle bundle,boolean allowBackStock) {
+        return mActivity.showFragment(clazz, bundle, allowBackStock);
     }
     @Override
     @CallSuper

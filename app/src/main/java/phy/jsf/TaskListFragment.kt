@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import phy.jsf.WebViewFragment.Companion.EXTRAL_TASK_ITEM
 import phy.jsf.data.Task
 import phy.jsf.db.DbManager
 import phy.jsf.db.Settings
@@ -20,6 +21,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
+
     var  taskList:ArrayList<Task> = ArrayList()
     lateinit var tv_none:TextView
     lateinit var lv_tasks:ListView
@@ -72,9 +74,12 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         }else{
             var exec=checkExecTime(task)
             if(exec){
-                var edit:Intent=Intent(mActivity,EditActivity::class.java)
-                edit.putExtra(EditActivity.ACTION_EDIT_FORM,task)
-                mActivity.startActivity(edit)
+//                var edit:Intent=Intent(mActivity,EditActivity::class.java)
+//                edit.putExtra(EditActivity.ACTION_EDIT_FORM,task)
+//                mActivity.startActivity(edit)'
+                var bundle=Bundle()
+                bundle.putParcelable(EXTRAL_TASK_ITEM,task)
+                showFragment(WebViewFragment::class.java,bundle,false)
             }else{
                 Toast.makeText(mActivity,R.string.time_err,Toast.LENGTH_SHORT).show()
             }
