@@ -1,6 +1,5 @@
 package phy.jsf
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +12,12 @@ import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import org.json.JSONArray
 import org.json.JSONObject
 import phy.jsf.data.Task
+import phy.jsf.data.User
 import phy.jsf.db.DbManager
+import phy.jsf.db.Settings
 import phy.jsf.util.MyWebView
 import x.datautil.L
 import x.frame.BaseActivity
@@ -66,6 +68,20 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
 
                         var json=JSONObject()
                         json.put("form_id",task!!.form_id)
+
+                        var users=ArrayList<User>()
+                        DbManager.getDbManager(mActivity).getManagerUser(users)
+                        if(users.size>0){
+                            var ja=JSONArray()
+                            for(user in users){
+                                var jo=JSONObject()
+                                jo.put("user_id",user.user_id)
+                                jo.put("user_name",user.dis_name)//user_name?
+                                ja.put(jo)
+                            }
+                            json.put("checkList",ja)
+                        }
+
                         //add other content into json str.
                         //...
                         var jsonStr=json.toString()
@@ -89,20 +105,46 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
         }
     }
 
-    class JsInteration(var context: BaseActivity) {
+  inner class JsInteration(var context: BaseActivity) {
         @JavascriptInterface
         fun onTaskEdit(json: String) {
             L.e("web edit task res json:$json")
             //save data.
-
-            var etask=Task()
             /*
             * complete other task info from json str.
             * */
-
-            /*
+            var etask= task
+            try {
+                var jo=JSONObject(json)
+                if(jo!=null){
+                    if(jo.has("edit_content")){
+                        etask!!.edit_content=jo.getString("edit_content")
+                    }
+                    if(jo.has("state")){
+                        /*
+                        //state 的返回值参照这四个
+                        Settings.TASK_CACHE = 1    //保存
+                        Settings.TASK_ERR = 2      //异常提交
+                        Settings.TASK_COMMIT = 3   //提交
+                        Settings.TASK_ERR_OVER = 4 //异常审核
+                        * */
+                        etask!!.state=jo.getInt("state")
+                    }
+                    if(jo.has(("update_time"))){
+                        etask!!.upload_time=jo.getLong("update_time") //ms
+                    }
+                    if(jo.has(("commit_time"))){
+                        etask!!.commit_time=jo.getLong("commit_time") //ms
+                    }
+                    if(jo.has(("check_time"))){
+                        etask!!.check_time=jo.getLong("check_time") //ms
+                    }
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
             //save data.
-            etask.upload_state=0
+            etask!!.upload_state=0
             DbManager.getDbManager(context).addTask(etask,false)
             //broadcast for upload to server.
             var upAction= Intent(context,DataService::class.java)
@@ -111,7 +153,7 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
             LocalBroadcastManager.getInstance(context).sendBroadcast(upAction)
             //exit.
             context.onBackPressed()
-            */
+            
         }
     }
 
