@@ -1,11 +1,267 @@
 <html>
-<script type="text/javascript">
-       function edit_task(json) {
-       alert("task:"+JSON.stringify(json))
-       window.control.onTaskEdit("edit_task:"+JSON.stringify(json))
-       }
-</script>
+<head>
+ <link rel="stylesheet" href="../easyui/themes/default/easyui.css" />
+ <link rel="stylesheet" href="../easyui/themes/icon.css" />
+ <link rel="stylesheet" href="../css/common.css" />
+ <style>
+   table {width: 100%;margin: 0 auto;}
+   tr {height: 60px}
+   table td{border:1px solid #95b8e7;padding-left: 30px}
+ </style>
+</head>
  <body>
- <center> <p>Web 页面.</p> </center>
+ <center>
+  <form id="formValue">
+   <table style="width: 100%" id="tb"></table>
+  </form>
+  <div style="text-align: center;margin-top: 10px">
+   <a id="save" class="easyui-linkbutton" style="width:120px;margin:5px" onclick="saveForm()">保存</a>
+   <a id="commit" class="easyui-linkbutton" style="width:120px;margin:5px" onclick="commitForm()">提交</a>
+   <div style="float:right" id="checkDiv">
+    <a id="checkCommit" class="easyui-linkbutton" style="width:120px;margin:5px" onclick="checkForm()">异常提交</a>
+    <input id="checkUser"/>
+   </div>
+   <a id="checkCommit1" class="easyui-linkbutton" style="width:120px;margin:5px" onclick="checkForm1()">审核确认</a>
+  </div>
+ </center>
  </body>
+<script src="../easyui/jquery.min.js"></script>
+<script src="../easyui/jquery.easyui.min.js"></script>
+<script src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="../js/common.js"></script>
+<script>
+ var task = null;
+ var isStart = false;
+ // 页面加载就执行的方法，由android控制（但会执行两次）
+ function edit_task(json) {
+  if (isStart) {
+   return ;
+  }
+  isStart = true;
+  task = json;
+  alert(JSON.stringify(json));
+  show(json.content);
+  showCheckUser(json.checkList);
+  showButton(json.state);
+ }
+ $(function () {
+   //show(id);
+   //showContentVal(contentId);
+ })
+
+ function showButton(state){
+  if(state==0){// 未开始
+   $("#checkCommit1").hide();
+  }else if(state == 1){// 草稿
+   $("#checkCommit1").hide();
+  }else if(state == 2){// 异常提交
+   $("#save,#commit,#checkDiv").hide();
+  }else if(state == 3){// 已提交
+   // 只读
+   $("#save,#commit,#checkDiv,#checkCommit1").hide();
+  }else{// 4审核提交，5延期
+  // 只读
+   $("#save,#commit,#checkDiv,#checkCommit1").hide();
+  }
+ }
+
+ function showCheckUser(checkList){
+  $("#checkUser").combobox({
+    data:checkList,
+    valueField:'user_id',
+    textField:'user_name'
+  });
+ }
+
+  function show(content) {
+    let json = JSON.parse(content);
+    let rows = json.rows;
+
+    // 获取每行有多少人列的最小公倍数，为后续计算td跨列做准备
+    let arr = new Array();
+    for (let i=0;i<rows.length;i++){
+      arr.push(rows[i].length);
+    }
+    const c = smallestCommonMultiple(arr);
+
+    for (let i=0;i<rows.length;i++){
+      let _tr = $("<tr></tr>");
+      $("#tb").append($(_tr));
+
+      let columns = rows[i];
+      const l = columns.length;
+      if (l<=0){
+        continue ;
+      }
+      for(let j=0;j<l;j++){
+        let obj = columns[j];
+        let tdHtml = "";
+        tdHtml += "<td colspan='"+c/l+"'><label style='margin-right:50px'>"+obj.title+"</label>";
+        if (obj.type == "text"){
+          tdHtml += "<input type='text' name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-textbox'/>"
+        }else if (obj.type == 'textArea'){
+          tdHtml += "<textarea type='text' name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-textbox' data-options='multiline:true' style='height: 50px' />"
+        }else if (obj.type == 'radio'){
+          for (let k=0;k<obj.selectOption.length;k++){
+            tdHtml += "<input type='radio' name='"+obj.jsonName+"' value='"+obj.selectOption[k]+"'/>"+obj.selectOption[k];
+          }
+        }else if (obj.type == 'checkbox'){
+          for (let k=0;k<obj.selectOption.length;k++){
+            tdHtml += "<input type='checkbox' name='"+obj.jsonName+"' value='"+obj.selectOption[k]+"'/>"+obj.selectOption[k];
+            //tdHtml += "<input type='checkbox' name='"+obj.jsonName+"' value='"+obj.selectOption[k]+"' class='easyui-checkbox'/>"+obj.selectOption[k];
+          }
+        }else if (obj.type == 'select'){
+          tdHtml += "<select name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-combobox' style='width: 160px'>"
+          let selectOption = obj.selectOption;
+          for(let i=0;i<selectOption.length;i++){
+            tdHtml += "<option value='"+selectOption[i]+"'>"+selectOption[i]+"</option>";
+          }
+          tdHtml += "</select>"
+        }else if (obj.type == "title"){
+          tdHtml = "<td colspan='"+c/l+"' align='center'><label style='margin-right:10px'><font style='font-size:"+obj.size+"'>"+obj.title+"</font></label>";
+        }
+        tdHtml += "</td>";
+        $(_tr).append(tdHtml);
+        $.parser.parse();
+      }
+    }
+  }
+
+  //算法：利用最大公约数求两整数的最小公倍数
+  function twoSmallestCommonMultiple(a,b){
+    var c=mostCommonDivisor(a,b);
+    return a*b/c;
+  }
+  //算法：辗转相减法求两个整数的最大公约数
+  function mostCommonDivisor(a,b){
+    var c=Math.min(a,b);
+    a=Math.max(a,b);
+    b=c;
+    if(b===0){
+      return  alert("error,please input a number bigger than zero");
+    }
+    var c=a-b;
+    while(c>0){
+      a=Math.max(b,c);
+      b=Math.min(b,c);
+      c=a-b;
+    }
+    return b;
+  }
+  //使用函数调用和递推的方式求数组所有元素的最小公倍数
+  function smallestCommonMultiple(arr){
+    if(arr.length<2){
+      return arr[0];
+    }
+    var a=0;
+    var result=1;
+    for(var i=0;i<arr.length;i++){
+      result=twoSmallestCommonMultiple(result,arr[i]);
+    }
+    return result;
+  }
+
+  function showContentVal(contentId) {
+    if (contentId==null || contentId==""){
+      return ;
+    }
+    jsonPostAsync("${ctx}/formContent/getById?id="+contentId, null, function (data) {
+      if (data.code == 200){
+        let entity = data.entity;
+        if (entity == null || entity.content==null){
+          return ;
+        }
+        let json = JSON.parse(entity.content);
+        let rows = json.value;
+        for (let i=0;i<rows.length;i++){
+          let column = rows[i];
+          // for (let j=0;j<column.length;j++){
+            for (key in column){
+              if ($("#"+key).length!=0){
+                let tagName = $("#"+key)[0].tagName;
+                if (tagName == "INPUT" || tagName == "TEXTAREA"){
+                  $("#"+key).textbox('setValue',column[key]);
+                }else if (tagName == "SELECT"){
+                  $("#"+key).combobox('setValue',column[key]);
+                }
+              }else if ($("input[name="+key+"]").length!=0){
+                if (Array.isArray(column[key])){// 是数组，则为checkbox
+                  let arr = column[key];
+                  for (let k=0;k<arr.length;k++){
+                    $("input[name="+key+"]").each(function () {
+                      if ($(this).val() == arr[k]){
+                        let prev = $(this).prev();
+                        $(prev).addClass("checkbox-checked");
+                        $(prev).css("display","");
+                      }
+                    });
+                  }
+                }else {// 不是数组，则为radio
+                  $("input[name="+key+"]").each(function () {
+                    if ($(this).val() == column[key]){
+                      $(this).attr("checked",true);
+                    }
+                  });
+                }
+                /*$("input[name="+key+"]").each(function () {
+                  if ($(this).val() == column[key]){
+                    if ($(this).attr("type")=="checkbox"){
+                      let prev = $(this).prev();
+                      $(prev).addClass("checkbox-checked");
+                      $(prev).css("display","");
+                    }else if ($(this).attr("type")=="radio"){
+                      $(this).attr("checked",true);
+                    }
+                  }
+                });*/
+              }
+            // }
+          }
+        }
+      }else {
+        $.messager.alert('提示','获取内容错误');
+      }
+    });
+  }
+  // 保存
+  function saveForm(){
+   let jsonObject = getData();
+   jsonObject.state = 1;
+   window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
+  }
+  // 提交
+  function commitForm(){
+   let jsonObject = getData();
+   jsonObject.state = 3;
+   window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
+  }
+  // 异常提交
+  function checkForm(){
+   let checkUserId = $("#checkUser").combobox('getValue');
+   if(checkUserId==null || checkUserId==""){
+    $.messager.alert('提示','请选择审核人');
+   }
+   let checkUserName = $("#checkUser").combobox('getText');
+   $.messager.confirm('提示','确定要将异常信息提交给'+checkUserName+'吗？',function(r){
+    if (r) {
+     let jsonObject = getData();
+     jsonObject.state = 2;
+     jsonObject.check_user = checkUserId;
+     window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
+    }
+   });
+  }
+  // 审核确认
+  function checkForm1(){
+   jsonObject.state = 4;
+   window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
+  }
+  function getData(status){
+   let json = formJson("#formValue");
+   let jsonObject = {};
+   jsonObject.content = JSON.stringify(json);
+   jsonObject.task_id = task.task_id;
+   return jsonObject;
+  }
+</script>
 </html>

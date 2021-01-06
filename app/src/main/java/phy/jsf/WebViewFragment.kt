@@ -68,6 +68,10 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
 
                         var json=JSONObject()
                         json.put("form_id",task!!.form_id)
+                        json.put("content",task!!.content)
+                        json.put("edit_content",task!!.edit_content)
+                        json.put("task_id",task!!.task_id)
+                        json.put("state",task!!.state)
 
                         var users=ArrayList<User>()
                         DbManager.getDbManager(mActivity).getManagerUser(users)
