@@ -22,6 +22,7 @@ import phy.jsf.util.MyWebView
 import x.datautil.L
 import x.frame.BaseActivity
 import x.frame.BaseFragment
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -65,12 +66,9 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
                 if (progress == 100) {
                     //do something.
                     if(task!=null){
-
                         var json=JSONObject()
-                        json.put("form_id",task!!.form_id)
                         json.put("content",task!!.content)
                         json.put("edit_content",task!!.edit_content)
-                        json.put("task_id",task!!.task_id)
                         json.put("state",task!!.state)
 
                         var users=ArrayList<User>()
@@ -133,16 +131,19 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
                         Settings.TASK_ERR_OVER = 4 //异常审核
                         * */
                         etask!!.state=jo.getInt("state")
+                        if(etask!!.state == Settings.TASK_CACHE || etask!!.state == Settings.TASK_COMMIT){
+                            etask!!.user_id=Settings.curUser.user_id
+                            etask!!.commit_time = Date().time
+                        }else if (etask!!.state == Settings.TASK_ERR){
+                            etask!!.user_id=Settings.curUser.user_id
+                            etask!!.commit_time = Date().time
+                            etask!!.check_user = jo.getString("check_user");
+                        }else if (etask!!.state == Settings.TASK_ERR_OVER){
+                            etask!!.check_user=Settings.curUser.user_id
+                            etask!!.check_time = Date().time
+                        }
                     }
-                    if(jo.has(("update_time"))){
-                        etask!!.upload_time=jo.getLong("update_time") //ms
-                    }
-                    if(jo.has(("commit_time"))){
-                        etask!!.commit_time=jo.getLong("commit_time") //ms
-                    }
-                    if(jo.has(("check_time"))){
-                        etask!!.check_time=jo.getLong("check_time") //ms
-                    }
+                    etask!!.upload_time=Date().time
                 }
             }catch (e:Exception){
                 e.printStackTrace()

@@ -109,6 +109,7 @@ public class HttpSender {
     public static final String CONTENTS="contents";
     public static final String CREATE_TIME="createTime";
     public static final String UPDATE_TIME="updateTime";
+    public static final String COMMIT_TIME="commitTime";
     public static final String CHECK_USER="checkUser";
     public static final String CHECK_TIME="checkTime";
     public static final String CONTENT_VAL="value";

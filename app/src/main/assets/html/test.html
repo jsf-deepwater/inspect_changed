@@ -30,24 +30,19 @@
 <script src="../easyui/locale/easyui-lang-zh_CN.js"></script>
 <script src="../js/common.js"></script>
 <script>
- var task = null;
  var isStart = false;
+ var jsonContent = null;
  // 页面加载就执行的方法，由android控制（但会执行两次）
  function edit_task(json) {
   if (isStart) {
    return ;
   }
   isStart = true;
-  task = json;
-  alert(JSON.stringify(json));
   show(json.content);
   showCheckUser(json.checkList);
   showButton(json.state);
+  showContentVal(json.edit_content);
  }
- $(function () {
-   //show(id);
-   //showContentVal(contentId);
- })
 
  function showButton(state){
   if(state==0){// 未开始
@@ -76,7 +71,7 @@
   function show(content) {
     let json = JSON.parse(content);
     let rows = json.rows;
-
+    jsonContent = rows;
     // 获取每行有多少人列的最小公倍数，为后续计算td跨列做准备
     let arr = new Array();
     for (let i=0;i<rows.length;i++){
@@ -161,73 +156,54 @@
     return result;
   }
 
-  function showContentVal(contentId) {
-    if (contentId==null || contentId==""){
+  function showContentVal(edit_content) {
+    if (edit_content==null || edit_content==""){
       return ;
     }
-    jsonPostAsync("${ctx}/formContent/getById?id="+contentId, null, function (data) {
-      if (data.code == 200){
-        let entity = data.entity;
-        if (entity == null || entity.content==null){
-          return ;
-        }
-        let json = JSON.parse(entity.content);
-        let rows = json.value;
-        for (let i=0;i<rows.length;i++){
-          let column = rows[i];
-          // for (let j=0;j<column.length;j++){
-            for (key in column){
-              if ($("#"+key).length!=0){
-                let tagName = $("#"+key)[0].tagName;
-                if (tagName == "INPUT" || tagName == "TEXTAREA"){
-                  $("#"+key).textbox('setValue',column[key]);
-                }else if (tagName == "SELECT"){
-                  $("#"+key).combobox('setValue',column[key]);
-                }
-              }else if ($("input[name="+key+"]").length!=0){
-                if (Array.isArray(column[key])){// 是数组，则为checkbox
-                  let arr = column[key];
-                  for (let k=0;k<arr.length;k++){
-                    $("input[name="+key+"]").each(function () {
-                      if ($(this).val() == arr[k]){
-                        let prev = $(this).prev();
-                        $(prev).addClass("checkbox-checked");
-                        $(prev).css("display","");
-                      }
-                    });
+    let json = JSON.parse(edit_content);
+    let rows = json.value;
+    for (let i=0;i<rows.length;i++){
+      let column = rows[i];
+      // for (let j=0;j<column.length;j++){
+        for (key in column){
+          if ($("#"+key).length!=0){
+            let tagName = $("#"+key)[0].tagName;
+            if (tagName == "INPUT" || tagName == "TEXTAREA"){
+              $("#"+key).textbox('setValue',column[key]);
+            }else if (tagName == "SELECT"){
+              $("#"+key).combobox('setValue',column[key]);
+            }
+          }else if ($("input[name="+key+"]").length!=0){
+            if (Array.isArray(column[key])){// 是数组，则为checkbox
+              let arr = column[key];
+              for (let k=0;k<arr.length;k++){
+                $("input[name="+key+"]").each(function () {
+                  if ($(this).val() == arr[k]){
+                    $(this).attr('checked', 'true');
+                    return true;// continue
+                    //let prev = $(this).prev();
+                    //$(prev).addClass("checkbox-checked");
+                    //$(prev).css("display","");
                   }
-                }else {// 不是数组，则为radio
-                  $("input[name="+key+"]").each(function () {
-                    if ($(this).val() == column[key]){
-                      $(this).attr("checked",true);
-                    }
-                  });
-                }
-                /*$("input[name="+key+"]").each(function () {
-                  if ($(this).val() == column[key]){
-                    if ($(this).attr("type")=="checkbox"){
-                      let prev = $(this).prev();
-                      $(prev).addClass("checkbox-checked");
-                      $(prev).css("display","");
-                    }else if ($(this).attr("type")=="radio"){
-                      $(this).attr("checked",true);
-                    }
-                  }
-                });*/
+                });
               }
-            // }
+            }else {// 不是数组，则为radio
+              $("input[name="+key+"]").each(function () {
+                if ($(this).val() == column[key]){
+                  $(this).attr("checked",true);
+                }
+              });
+            }
           }
-        }
-      }else {
-        $.messager.alert('提示','获取内容错误');
+        // }
       }
-    });
+    }
   }
   // 保存
   function saveForm(){
    let jsonObject = getData();
    jsonObject.state = 1;
-   window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
+   window.control.onTaskEdit(JSON.stringify(jsonObject));
   }
   // 提交
   function commitForm(){
@@ -256,11 +232,26 @@
    jsonObject.state = 4;
    window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
   }
+  // 获取填写表单的值，并按照原有格式组装
   function getData(status){
-   let json = formJson("#formValue");
+    let json = formJson("#formValue");
+    let result = {};
+    result.value = [];
+    for (let i=0;i<jsonContent.length;i++){
+      let columns = jsonContent[i];
+      const l = columns.length;
+      if (l<=0){
+        continue ;
+      }
+      let temp = {};
+      for (let j=0;j<columns.length;j++){
+        temp[columns[j].jsonName]=json[columns[j].jsonName];
+      }
+      result.value[i]=temp;
+    }
+
    let jsonObject = {};
-   jsonObject.content = JSON.stringify(json);
-   jsonObject.task_id = task.task_id;
+   jsonObject.edit_content = JSON.stringify(result);
    return jsonObject;
   }
 </script>

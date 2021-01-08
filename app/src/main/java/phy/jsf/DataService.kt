@@ -213,6 +213,9 @@ class DataService : BaseService() {
                 if(!TextUtils.isEmpty(task.check_user)){
                     map[HttpSender.CHECK_USER] = task.check_user
                 }
+                if(task.commit_time !=  0.toLong()){
+                    map[HttpSender.COMMIT_TIME] = Settings.SDF_DATE_TIME.format( task.commit_time)
+                }
                 if(task.check_time != 0.toLong()){
                     map[HttpSender.CHECK_TIME] = Settings.SDF_DATE_TIME.format( task.check_time)
                 }
@@ -242,6 +245,9 @@ class DataService : BaseService() {
         if(!TextUtils.isEmpty(task.check_user)){
             map[HttpSender.CHECK_USER] = task.check_user
 
+        }
+        if(task.commit_time !=  0.toLong()){
+            map[HttpSender.COMMIT_TIME] = Settings.SDF_DATE_TIME.format( task.commit_time)
         }
         if(task.check_time !=  0.toLong()){
             map[HttpSender.CHECK_TIME] = Settings.SDF_DATE_TIME.format( task.check_time)
