@@ -35,7 +35,7 @@
     <string name="type_unstart">未开始</string>
     <string name="type_uncomplete">未完成</string>
     <string name="type_uncommit">未提交</string>
-    <string name="type_delay">延迟</string>
+    <string name="type_delay">延期</string>
     <string name="type_err">异常</string>
     <string name="type_complete">完成</string>
     <string name="cache_commit">保存</string>

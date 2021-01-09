@@ -7,7 +7,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import phy.jsf.WebViewFragment.Companion.EXTRAL_TASK_ITEM
 import phy.jsf.data.Task
@@ -21,12 +20,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
-
+    val REQUEST_QR_SCAN = 1000
     var  taskList:ArrayList<Task> = ArrayList()
     lateinit var tv_none:TextView
     lateinit var lv_tasks:ListView
     lateinit var sv_task: SearchView
     var queryStr:String?=null
+    var curTask:Task?=null
 //    lateinit var sv_none:ScrollView
 //    lateinit var sv_listener: SearchView.OnQueryTextListener
     lateinit var taskAdapter:TaskAdapter
@@ -60,6 +60,27 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         tv_none.isClickable=true
         tv_none.setOnClickListener(tv_Listener)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==REQUEST_QR_SCAN&&resultCode== BaseActivity.RESULT_OK){
+            if(data!=null){L.e("scan did:${data!!.getStringExtra(QRScanActivity.EXTRA_SCAN_RESULT)}")}
+            if(data!=null&&curTask!!.device_id.equals(data!!.getStringExtra(QRScanActivity.EXTRA_SCAN_RESULT))){
+                enable_edit_page(curTask!!)
+            }else{
+                Toast.makeText(mActivity,R.string.scan_did_err,Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun enable_edit_page(task:Task){
+//                var edit:Intent=Intent(mActivity,EditActivity::class.java)
+//                edit.putExtra(EditActivity.ACTION_EDIT_FORM,task)
+//                mActivity.startActivity(edit)'
+        var bundle=Bundle()
+        bundle.putParcelable(EXTRAL_TASK_ITEM,task)
+        showFragment(WebViewFragment::class.java,bundle,false)
+    }
     /*val sv_focus_listener:View.OnFocusChangeListener= View.OnFocusChangeListener{v,has_focus->
         if(has_focus){
             mActivity.imm.showSoftInput(v,InputMethodManager.SHOW_FORCED)
@@ -74,17 +95,18 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         }else{
             var exec=checkExecTime(task)
             if(exec){
-//                var edit:Intent=Intent(mActivity,EditActivity::class.java)
-//                edit.putExtra(EditActivity.ACTION_EDIT_FORM,task)
-//                mActivity.startActivity(edit)'
-                var bundle=Bundle()
-                bundle.putParcelable(EXTRAL_TASK_ITEM,task)
-                showFragment(WebViewFragment::class.java,bundle,false)
+                curTask=task
+                L.e("Device_id:${curTask!!.device_id}")
+                //scan
+                var intent=Intent()
+                intent.setClass(mActivity,QRScanActivity::class.java)
+                startActivityForResult(intent,REQUEST_QR_SCAN)
             }else{
                 Toast.makeText(mActivity,R.string.time_err,Toast.LENGTH_SHORT).show()
             }
         }
     }
+
     val tv_Listener:View.OnClickListener= android.view.View.OnClickListener{
         L.e("textview click.")
         sv_task.setQuery("",false)
@@ -96,7 +118,8 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         override fun onQueryTextSubmit(query: String?): Boolean {
             queryStr=query
             searchTask(queryStr)
-            L.e("querry.")
+            sv_task.clearFocus()                //可以收起键盘
+            sv_task.onActionViewCollapsed()    //可以收起SearchView视图
             return true
         }
 
@@ -141,8 +164,35 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
             L.e("get all task")
             DbManager.getDbManager(mActivity).getAllTask(taskList,Settings.curUser)
         }else{
-            L.e("get  task by did:$did")
-            DbManager.getDbManager(mActivity).getTaskByDeviceId(did, taskList)
+//            L.e("get  task by did:$did")
+//            DbManager.getDbManager(mActivity).getTaskByDeviceId(did, taskList)
+            //search by type.
+            taskList.clear()
+            Settings.TASK_TYPE.forEachIndexed { index, s ->
+                if(scanResTxt.equals(s)){
+                    DbManager.getDbManager(mActivity).getTaskByFormType(index+1, taskList)
+                }
+            }
+            //search by state.
+            var state = -1
+            if(scanResTxt.equals(resources.getString(R.string.type_unstart))){
+                state=Settings.TASK_UNSTART
+            }else if(scanResTxt.equals(resources.getString(R.string.type_uncommit))){
+                state=Settings.TASK_CACHE
+            }else if(scanResTxt.equals(resources.getString(R.string.type_err))){
+                state=Settings.TASK_ERR
+            }else if(scanResTxt.equals(resources.getString(R.string.type_complete))){
+                state= Settings.TASK_COMMIT
+            }
+            if(state>=0){
+                DbManager.getDbManager(mActivity).getTaskByFormState(state, taskList)
+            }
+            if(scanResTxt.equals(resources.getString(R.string.type_delay))){
+                DbManager.getDbManager(mActivity).getDelayTask(taskList)
+            }
+            //other.
+            DbManager.getDbManager(mActivity).getTaskByLike(scanResTxt, taskList)
+
         }
         for(task in taskList){
             L.e("task id:${task.task_id},state:${task.state},content:${task.edit_content},up_state:${task.upload_state}")

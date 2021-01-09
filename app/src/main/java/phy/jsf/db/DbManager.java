@@ -218,12 +218,55 @@ public class DbManager implements XDbManager {
         cursor.close();
     }
 
+
+
     public void  getTaskByLike(String key,ArrayList<Task> taskList){
 //        taskList.clear();
-//        String sql="select * from "+T_TASK+" where "+C_TASK_DEVICE_ID+" like ? or ";
-//        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql,new String[]{did});
-//        getTaskFromCursor(taskList,cursor);
-//        cursor.close();
+        String sql="select * from "+T_TASK+" where "+
+                C_TASK_DEVICE_ID+" like ? or "+C_TASK_DEVICE_NAME+" like ? or "
+                +C_FORM_NAME +" like ? or "+C_TASK_BUILDING +" like ? or "
+                +C_TASK_DEVICE_FLOOR +" like ? or "+C_TASK_DEVICE_ROOM +" like ? "
+                ;
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql,new String[]{key,key,key,key,key,key});
+        getTaskFromCursor(taskList,cursor);
+        cursor.close();
+    }
+
+    public void  getTaskByFormState(int state,ArrayList<Task> taskList){
+//        taskList.clear();
+        String sql=null;
+        Cursor cursor=null;
+        if(state<Settings.TASK_COMMIT){
+             sql="select * from "+T_TASK+" where "+
+                    C_TASK_STATE+" = ?";
+             cursor = dbHelper.getReadableDatabase().rawQuery(sql,new String[]{String.valueOf(state)});
+        }else{
+            sql="select * from "+T_TASK+" where "+
+                    C_TASK_STATE+" = ? or "+C_TASK_STATE+" = ? ";
+            cursor = dbHelper.getReadableDatabase().rawQuery(sql,new String[]{String.valueOf(Settings.TASK_COMMIT),String.valueOf(Settings.TASK_ERR_OVER)});
+        }
+
+        getTaskFromCursor(taskList,cursor);
+        cursor.close();
+    }
+
+    public void  getTaskByFormType(int type,ArrayList<Task> taskList){
+//        taskList.clear();
+        String sql="select * from "+T_TASK+" where "+
+                C_FORM_TYPE+" = ?";
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql,new String[]{String.valueOf(type)});
+        getTaskFromCursor(taskList,cursor);
+        cursor.close();
+    }
+
+    public void getDelayTask(ArrayList<Task> taskList){
+//        taskList.clear();
+        String sql="select * from "+T_TASK+" where "+
+                C_TASK_STATE+" < ? and "+
+                C_TASK_COMMIT_TIME+" < "+C_TASK_SCHEDULER_TIME ;
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql,new String[]{String.valueOf(Settings.TASK_COMMIT)});
+        getTaskFromCursor(taskList,cursor);
+        cursor.close();
     }
 
     public void getTaskByTaskId(String taskId,ArrayList<Task> taskList){

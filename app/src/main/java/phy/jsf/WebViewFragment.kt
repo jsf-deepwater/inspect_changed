@@ -158,7 +158,7 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
             LocalBroadcastManager.getInstance(context).sendBroadcast(upAction)
             //exit.
             context.onBackPressed()
-            
+
         }
     }
 
