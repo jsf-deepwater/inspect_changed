@@ -33,6 +33,13 @@
  var isStart = false;
  var jsonContent = null;
  // 页面加载就执行的方法，由android控制（但会执行两次）
+  function show_pie(json) {
+  if (isStart) {
+   return ;
+  }
+  isStart = true;
+//...
+ }
  function edit_task(json) {
   if (isStart) {
    return ;

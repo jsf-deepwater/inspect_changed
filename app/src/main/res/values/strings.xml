@@ -23,11 +23,15 @@
     <string name="user_settings">用户信息</string>
     <string name="d_name">设备名称</string>
     <string name="d_index">设备编号</string>
+    <string name="building">楼号</string>
+    <string name="floor">楼层</string>
+    <string name="room">房间号</string>
     <string name="task_name">表单名称</string>
     <string name="task_type">表单类别</string>
     <string name="task_scheduler_time">计划时间</string>
     <string name="task_complete_time">完成时间</string>
     <string name="status">状态</string>
+    <string name="form_state">表单状态</string>
     <string name="month">月度</string>
     <string name="quarterly">季度</string>
     <string name="year">年度</string>

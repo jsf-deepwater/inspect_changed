@@ -2,6 +2,7 @@ package x.frame;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,11 +23,11 @@ public abstract class BaseFragment extends Fragment implements  BaseActivity.OnA
     protected BaseActivity mActivity;
     FragmentSecureHandler mSecureHandler;
 
-    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Bundle bundle) {
-        return mActivity.showFragment(clazz, bundle, true);
+    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Intent intent) {
+        return mActivity.showFragment(clazz, intent, true);
     }
-    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Bundle bundle,boolean allowBackStock) {
-        return mActivity.showFragment(clazz, bundle, allowBackStock);
+    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Intent intent,boolean allowBackStock) {
+        return mActivity.showFragment(clazz, intent, allowBackStock);
     }
     @Override
     @CallSuper

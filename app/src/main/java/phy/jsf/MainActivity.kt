@@ -22,7 +22,12 @@ class MainActivity : BaseActivity() {
     val on_checked_changed_listener:RadioGroup.OnCheckedChangeListener= RadioGroup.OnCheckedChangeListener{ radioGroup: RadioGroup, i: Int ->
         when (i) {
             R.id.rb_main -> showFragment(TaskListFragment::class.java, null)
-            R.id.rb_chart ->showFragment(PieFragment::class.java, null)
+            R.id.rb_chart ->{
+//                showFragment(PieFragment::class.java, null)
+                var intent=Intent()
+                intent.setAction(WebViewFragment.ACTION_PIE)
+                showFragment(WebViewFragment::class.java,intent,false)
+            }
             R.id.rb_user -> {
                 //requestCamera()
                 showFragment(UserSettingsFragment::class.java, null)

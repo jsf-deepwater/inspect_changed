@@ -29,20 +29,28 @@ import java.util.*
 class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
     companion object {
         public const val EXTRAL_TASK_ITEM="phy.jsf.WebViewFragment.EXTRAL_TASK_ITEM"
+        public const val ACTION_FORM="phy.jsf.WebViewFragment.ACTION_FORM"
+        public const val ACTION_PIE="phy.jsf.WebViewFragment.ACTION_PIE"
     }
 
     lateinit var my_web: MyWebView
     var task:Task?=null
+    var action:String?=null
     interface ChartCallBack {
         fun URLLoadFinished()
     }
 
     override fun onGetAction(intent: Intent?) {
         if(intent!=null){
-            var bundle=intent!!.extras
-            if(bundle!=null){
-                task=bundle.getParcelable(EXTRAL_TASK_ITEM)
-            }
+            action=intent.action
+            task= intent.getParcelableExtra<Task>(EXTRAL_TASK_ITEM)
+
+
+//            var bundle=intent!!.extras
+//            if(bundle!=null){
+//                task=bundle.getParcelable(EXTRAL_TASK_ITEM)
+//            }
+
         }
     }
 
@@ -64,32 +72,39 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
         my_web.setWebChromeClient(object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, progress: Int) {
                 if (progress == 100) {
-                    //do something.
-                    if(task!=null){
-                        var json=JSONObject()
-                        json.put("content",task!!.content)
-                        json.put("edit_content",task!!.edit_content)
-                        json.put("state",task!!.state)
+                    if(action == ACTION_FORM){
+                        //do something.
+                        if(task!=null){
+                            var json=JSONObject()
+                            json.put("content",task!!.content)
+                            json.put("edit_content",task!!.edit_content)
+                            json.put("state",task!!.state)
 
-                        var users=ArrayList<User>()
-                        DbManager.getDbManager(mActivity).getManagerUser(users)
-                        if(users.size>0){
-                            var ja=JSONArray()
-                            for(user in users){
-                                var jo=JSONObject()
-                                jo.put("user_id",user.user_id)
-                                jo.put("user_name",user.dis_name)//user_name?
-                                ja.put(jo)
+                            var users=ArrayList<User>()
+                            DbManager.getDbManager(mActivity).getManagerUser(users)
+                            if(users.size>0){
+                                var ja=JSONArray()
+                                for(user in users){
+                                    var jo=JSONObject()
+                                    jo.put("user_id",user.user_id)
+                                    jo.put("user_name",user.dis_name)//user_name?
+                                    ja.put(jo)
+                                }
+                                json.put("checkList",ja)
                             }
-                            json.put("checkList",ja)
+
+                            //add other content into json str.
+                            //...
+                            var jsonStr=json.toString()
+
+                            my_web.loadUrl(String.format(Locale.US, "javascript:edit_task(%s)", jsonStr))
                         }
-
-                        //add other content into json str.
-                        //...
-                        var jsonStr=json.toString()
-
-                        my_web.loadUrl(String.format(Locale.US, "javascript:edit_task(%s)", jsonStr))
+                    }else if(action== ACTION_PIE){
+                        var jo=set_pie_data()
+                        L.e("show pie :${jo.toString()}")
+                        my_web.loadUrl(String.format(Locale.US, "javascript:show_pie(%s)", jo.toString()))
                     }
+
                     if (callback != null) {
                         callback.URLLoadFinished()
                     }
@@ -105,6 +120,46 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
         override fun URLLoadFinished() {
             //do something
         }
+    }
+
+    fun set_pie_data():JSONObject{
+        var taskList: ArrayList<Task> = ArrayList()
+        DbManager.getDbManager(mActivity).getAllTask(taskList, Settings.curUser)
+        var all=taskList.size
+        var delay=0
+        var unstart=0
+        var cache=0
+        var err=0
+        var commit =0
+        for(item in taskList){
+            if(item.state== Settings.TASK_UNSTART){
+                var sch=Settings.SDF_DATE.format(item.scheduler_time)
+                var today=Settings.SDF_DATE.format(System.currentTimeMillis())
+                if(item.create_time == (0.toLong())&&(sch<today)){
+                    delay++
+                }else{
+                    unstart++
+                }
+
+            }
+            if(item.state== Settings.TASK_COMMIT ||item.state== Settings.TASK_ERR_OVER){
+                commit++
+            }
+            if(item.state== Settings.TASK_ERR){
+                err++
+            }
+            if(item.state== Settings.TASK_CACHE){
+                cache++
+            }
+        }
+
+        var jo=JSONObject()
+        jo.put("delay",delay)
+        jo.put("unstart",unstart)
+        jo.put("cache",cache)
+        jo.put("err",err)
+        jo.put("commit",commit)
+        return jo
     }
 
   inner class JsInteration(var context: BaseActivity) {

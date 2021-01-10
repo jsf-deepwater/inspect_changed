@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <!--device id-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_d_id"
+        android:text="@string/d_index"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        />
+    <EditText
+        style="@style/task_content"
+        android:id="@+id/tv_d_id_str"
+        android:hint="@string/d_index"
+        android:layout_toRightOf="@id/tv_d_id"
+        android:layout_alignBottom="@id/tv_d_id"
+        />
+    <!--device name-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_d_name"
+        android:text="@string/d_name"
+        android:layout_alignBottom="@id/tv_d_id"
+        android:layout_toRightOf="@id/tv_d_id_str"
+        />
+    <EditText
+        style="@style/task_content"
+        android:id="@+id/tv_d_name_str"
+        android:hint="@string/d_name"
+        android:layout_toRightOf="@id/tv_d_name"
+        android:layout_alignBottom="@id/tv_d_name"
+        />
+    <!-- task name-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_task_name"
+        android:text="@string/task_name"
+        android:layout_alignBottom="@id/tv_d_name_str"
+        android:layout_toRightOf="@id/tv_d_name_str"
+        />
+    <EditText
+        style="@style/task_content"
+        android:id="@+id/tv_task_name_str"
+        android:hint="@string/task_name"
+        android:layout_alignBottom="@id/tv_task_name"
+        android:layout_toRightOf="@id/tv_task_name"
+        />
+
+
+    <!--device building-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_d_building"
+        android:text="@string/building"
+        android:layout_below="@id/tv_d_name"
+        />
+    <EditText
+        style="@style/task_content"
+        android:id="@+id/tv_d_building_str"
+        android:hint="@string/building"
+        android:layout_toRightOf="@id/tv_d_building"
+        android:layout_alignBottom="@id/tv_d_building"
+        />
+    <!--device floor-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_d_floor"
+        android:text="@string/floor"
+        android:layout_toRightOf="@id/tv_d_building_str"
+        android:layout_alignBottom="@id/tv_d_building"
+        />
+    <EditText
+        style="@style/task_content"
+        android:id="@+id/tv_d_floor_str"
+        android:hint="@string/floor"
+        android:layout_toRightOf="@id/tv_d_floor"
+        android:layout_alignBottom="@id/tv_d_floor"
+        />
+    <!--device room-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_d_room"
+        android:text="@string/room"
+        android:layout_toRightOf="@id/tv_d_floor_str"
+        android:layout_alignBottom="@id/tv_d_building"
+        />
+    <EditText
+        style="@style/task_content"
+        android:id="@+id/tv_d_room_str"
+        android:hint="@string/room"
+        android:layout_toRightOf="@id/tv_d_room"
+        android:layout_alignBottom="@id/tv_d_room"
+
+        />
+    <!-- task type-->
+<!--
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_task_type"
+        android:text="@string/task_type"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/tv_d_building"
+        />
+    <EditText
+        style="@style/task_content"
+        android:layout_width="@dimen/double_content_width"
+        android:id="@+id/tv_task_type_str"
+        android:hint="@string/task_type"
+        android:layout_alignBottom="@id/tv_task_type"
+        android:layout_toRightOf="@id/tv_task_type"
+        />
+-->
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_state"
+        android:text="@string/form_state"
+        android:layout_below="@id/tv_d_building"
+        android:layout_alignParentLeft="true"
+        />
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tv_state"
+        android:layout_alignBottom="@id/tv_state"
+        android:orientation="horizontal"
+        android:id="@+id/rg_state"
+        >
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_unstart"
+            android:id="@+id/rb_unstart"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_uncommit"
+            android:id="@+id/rb_uncommit"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_err"
+            android:id="@+id/rb_err"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_complete"
+            android:id="@+id/rb_complete"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/type_delay"
+            android:id="@+id/rb_delay"
+            />
+    </RadioGroup>
+
+    <TextView
+        style="@style/task_desc"
+        android:id="@+id/tv_type"
+        android:text="@string/task_type"
+        android:layout_below="@id/tv_state"
+        android:layout_alignParentLeft="true"
+        />
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tv_type"
+        android:layout_alignBottom="@id/tv_type"
+        android:orientation="horizontal"
+        android:id="@+id/rg_type"
+        >
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/month"
+            android:id="@+id/rb_month"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quarterly"
+            android:id="@+id/rb_quarter"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/year"
+            android:id="@+id/rb_year"
+            />
+
+    </RadioGroup>
+    <Button
+        style="@style/bt_common"
+        android:id="@+id/bt_commit"
+        android:text="@string/confirm"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv_type"
+        />
+</RelativeLayout>

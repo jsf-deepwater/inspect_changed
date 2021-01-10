@@ -202,16 +202,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        getWindow().setStatusBarColor(Color.TRANSPARENT);
     }
 
-    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Bundle bundle) {
-        return showFragment(clazz, bundle, true);
+    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Intent intent) {
+        return showFragment(clazz, intent, true);
     }
 
     /**
      * @param clazz
-     * @param bundle
+     * @param intent
      * @param allowBackStock 现在没时间处理这个参数
      */
-    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Bundle bundle, boolean allowBackStock) {
+    protected BaseFragment showFragment(Class<? extends BaseFragment> clazz, Intent intent, boolean allowBackStock) {
         View container = this.findViewById(R.id.fm_container);
         if(container==null){
             throw new RuntimeException("Need a FrameLayout which id is fm_container to load fragment.");
@@ -222,12 +222,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         FragmentManager fManager = getSupportFragmentManager();
         BaseFragment nextFragment = (BaseFragment) fManager.findFragmentByTag(clazz.getName());
         if (nextFragment == null) {
-            nextFragment = (BaseFragment) Fragment.instantiate(this, clazz.getName(), bundle);
+            nextFragment = (BaseFragment) Fragment.instantiate(this, clazz.getName(), null);
         }
 
-        if(bundle!=null){
-            Intent intent=new Intent();
-            intent.putExtras(bundle);
+        if(intent!=null){
+//            Intent intent=new Intent();
+//            intent.putExtras(bundle);
             nextFragment.onGetAction(intent);
         }
         //        if (curFragment != nextFragment) {

@@ -14,10 +14,12 @@ import phy.jsf.db.DbManager
 import phy.jsf.db.Settings
 import phy.jsf.db.Settings.TASK_ERR
 import x.datautil.L
+import x.dialog.AlertDialog
 import x.frame.BaseActivity
 import x.frame.BaseFragment
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
     val REQUEST_QR_SCAN = 1000
@@ -59,8 +61,178 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         tv_none=root.findViewById<TextView>(R.id.tv_none)
         tv_none.isClickable=true
         tv_none.setOnClickListener(tv_Listener)
+        var btn_search=root.findViewById<Button>(R.id.btn_search)
+        btn_search.setOnClickListener(View.OnClickListener {
+            show_search_dialog()
+        })
     }
 
+    var dialogFilter:AlertDialog?=null
+
+    fun listFilter(sourceList:ArrayList<Task>,filterList:ArrayList<Task>):ArrayList<Task>{
+        if(sourceList.size!=0&&filterList.size!=0){
+            var lastIndex=sourceList.size-1
+            for(i in lastIndex downTo 0){
+                var find=false
+                for(task in filterList){
+                    if(sourceList[i].form_id == task.form_id){
+                        find=true
+                        break
+                    }
+                }
+                if(!find){
+                    sourceList.removeAt(i)
+                }
+            }
+        }
+        return sourceList
+    }
+
+    lateinit var tv_d_id_str:EditText
+    lateinit var tv_d_name_str:EditText
+    lateinit var tv_task_name_str:EditText
+    lateinit  var tv_d_building_str:EditText
+    lateinit var tv_d_floor_str:EditText
+    lateinit var tv_d_room_str:EditText
+    lateinit var rg_state:RadioGroup
+    lateinit var rg_type:RadioGroup
+    lateinit var btn_confirm:Button
+
+    fun add_or_filter(filterEnd:Boolean,sourceList:ArrayList<Task>,filterList:ArrayList<Task>):Boolean{
+        if(!filterEnd){
+            if(sourceList.size==0){
+                sourceList.addAll(filterList)
+                return false
+            }else{
+                listFilter(sourceList,filterList)
+                return (sourceList.size == 0)
+            }
+        }
+        return filterEnd
+    }
+
+    fun show_search_dialog(){
+
+        if(dialogFilter==null){
+            dialogFilter = AlertDialog(mActivity, R.style.base_dialog)
+            val view: View = LayoutInflater.from(mActivity).inflate(R.layout.search_dialog, null)
+            dialogFilter!!.setView(view)
+            tv_d_id_str=view.findViewById<EditText>(R.id.tv_d_id_str)
+            tv_d_name_str=view.findViewById<EditText>(R.id.tv_d_name_str)
+            tv_task_name_str=view.findViewById<EditText>(R.id.tv_task_name_str)
+            tv_d_building_str=view.findViewById<EditText>(R.id.tv_d_building_str)
+            tv_d_floor_str=view.findViewById<EditText>(R.id.tv_d_floor_str)
+            tv_d_room_str=view.findViewById<EditText>(R.id.tv_d_room_str)
+            rg_state=view.findViewById<RadioGroup>(R.id.rg_state)
+            rg_type=view.findViewById<RadioGroup>(R.id.rg_type)
+            btn_confirm=view.findViewById<Button>(R.id.bt_commit)
+            btn_confirm.setOnClickListener {
+                var device_name_str=tv_d_name_str.text.toString()
+                var device_id_str=tv_d_id_str.text.toString()
+                var task_name_str=tv_task_name_str.text.toString()
+                var building_str=tv_d_building_str.text.toString()
+                var floor_str=tv_d_floor_str.text.toString()
+                var room_str=tv_d_room_str.text.toString()
+                var stateId=-1
+                var type=-1
+
+                val typeCnt: Int = rg_type.getChildCount()
+                for (i in 0 until typeCnt) {
+                    val rb = rg_type.getChildAt(i) as RadioButton
+                    if (rb.isChecked) {
+                        type=i
+                        break
+                    }
+                }
+                val stateCnt: Int = rg_state.getChildCount()
+                for (i in 0 until stateCnt) {
+                    val rb = rg_state.getChildAt(i) as RadioButton
+                    if (rb.isChecked) {
+                        stateId=i
+                        break
+                    }
+                }
+
+                //search by type.
+                taskList.clear()
+                var filterEnd=false
+                var searchList=ArrayList<Task>()
+                if(type != -1){
+                    searchList.clear()
+                    DbManager.getDbManager(mActivity).getTaskByFormType(type+1, searchList)
+//                    listFilter(taskList,searchList)
+                    filterEnd=add_or_filter(filterEnd,taskList,searchList)
+                }
+                if(stateId!= -1){
+                    //延期
+                    searchList.clear()
+                    if(stateId<4){
+                        DbManager.getDbManager(mActivity).getTaskByFormState(stateId, searchList)
+                    }else{
+                        DbManager.getDbManager(mActivity).getDelayTask(searchList)
+                    }
+//                    listFilter(taskList,searchList)
+                    filterEnd=add_or_filter(filterEnd,taskList,searchList)
+                }
+                if(!TextUtils.isEmpty(device_name_str)){
+                    searchList.clear()
+                    DbManager.getDbManager(mActivity).getTaskByLike(device_name_str, taskList)
+//                    listFilter(taskList,searchList)
+                    filterEnd=add_or_filter(filterEnd,taskList,searchList)
+                }
+                if(!TextUtils.isEmpty(device_id_str)){
+                    searchList.clear()
+                    DbManager.getDbManager(mActivity).getTaskByLike(device_id_str, taskList)
+//                    listFilter(taskList,searchList)
+                    filterEnd=add_or_filter(filterEnd,taskList,searchList)
+                }
+                if(!TextUtils.isEmpty(task_name_str)){
+                    searchList.clear()
+                    DbManager.getDbManager(mActivity).getTaskByLike(task_name_str, taskList)
+//                    listFilter(taskList,searchList)
+                    filterEnd=add_or_filter(filterEnd,taskList,searchList)
+                }
+                if(!TextUtils.isEmpty(building_str)){
+                    searchList.clear()
+                    DbManager.getDbManager(mActivity).getTaskByLike(building_str, taskList)
+//                    listFilter(taskList,searchList)
+                    filterEnd=add_or_filter(filterEnd,taskList,searchList)
+                }
+                if(!TextUtils.isEmpty(floor_str)){
+                    searchList.clear()
+                    DbManager.getDbManager(mActivity).getTaskByLike(floor_str, taskList)
+//                    listFilter(taskList,searchList)
+                    filterEnd=add_or_filter(filterEnd,taskList,searchList)
+                }
+                if(!TextUtils.isEmpty(room_str)){
+                    searchList.clear()
+                    DbManager.getDbManager(mActivity).getTaskByLike(room_str, taskList)
+//                    listFilter(taskList,searchList)
+                    filterEnd=add_or_filter(filterEnd,taskList,searchList)
+                }
+
+                for(task in taskList){
+                    L.e("task id:${task.task_id},state:${task.state},content:${task.edit_content},up_state:${task.upload_state}")
+                }
+                taskAdapter.notifyDataSetChanged()
+                if(taskList.size==0){
+                    tv_none.visibility=View.VISIBLE
+                }else{
+                    tv_none.visibility=View.GONE
+                }
+                dialogFilter!!.dismiss()
+            }
+        }
+        tv_d_id_str.text.clear()
+        tv_d_name_str.text.clear()
+        tv_task_name_str.text.clear()
+        tv_d_building_str.text.clear()
+        tv_d_floor_str.text.clear()
+        tv_d_room_str.text.clear()
+        rg_state.clearCheck()
+        rg_type.clearCheck()
+        dialogFilter!!.show()
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==REQUEST_QR_SCAN&&resultCode== BaseActivity.RESULT_OK){
@@ -77,9 +249,10 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
 //                var edit:Intent=Intent(mActivity,EditActivity::class.java)
 //                edit.putExtra(EditActivity.ACTION_EDIT_FORM,task)
 //                mActivity.startActivity(edit)'
-        var bundle=Bundle()
-        bundle.putParcelable(EXTRAL_TASK_ITEM,task)
-        showFragment(WebViewFragment::class.java,bundle,false)
+        var intent=Intent()
+        intent.setAction(WebViewFragment.ACTION_FORM)
+        intent.putExtra(EXTRAL_TASK_ITEM,task)
+        showFragment(WebViewFragment::class.java,intent,false)
     }
     /*val sv_focus_listener:View.OnFocusChangeListener= View.OnFocusChangeListener{v,has_focus->
         if(has_focus){
@@ -201,7 +374,6 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         taskAdapter.notifyDataSetChanged()
         if(taskList.size==0){
             tv_none.visibility=View.VISIBLE
-
         }else{
             tv_none.visibility=View.GONE
         }
