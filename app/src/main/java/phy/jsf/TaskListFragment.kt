@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import org.json.JSONObject
 import phy.jsf.WebViewFragment.Companion.EXTRAL_TASK_ITEM
 import phy.jsf.data.Task
 import phy.jsf.db.DbManager
@@ -236,12 +237,15 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==REQUEST_QR_SCAN&&resultCode== BaseActivity.RESULT_OK){
-            if(data!=null){L.e("scan did:${data!!.getStringExtra(QRScanActivity.EXTRA_SCAN_RESULT)}")}
-            if(data!=null&&curTask!!.device_id.equals(data!!.getStringExtra(QRScanActivity.EXTRA_SCAN_RESULT))){
-                enable_edit_page(curTask!!)
-            }else{
-                Toast.makeText(mActivity,R.string.scan_did_err,Toast.LENGTH_SHORT).show()
+            if(data!=null){
+                L.e("scan did:${data!!.getStringExtra(QRScanActivity.EXTRA_SCAN_RESULT)}")
+                var json= JSONObject(data!!.getStringExtra(QRScanActivity.EXTRA_SCAN_RESULT))
+                if (curTask!!.device_id.equals(json.get("id"))){
+                    enable_edit_page(curTask!!)
+                    return ;
+                }
             }
+            Toast.makeText(mActivity,R.string.scan_did_err,Toast.LENGTH_SHORT).show()
         }
     }
 

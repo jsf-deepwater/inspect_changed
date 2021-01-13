@@ -111,10 +111,16 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
                 }
             }
         })
-        my_web.loadUrl("file:///android_asset/html/test.html")
+        var t = "填写表单";
+        if(action == ACTION_FORM){
+            my_web.loadUrl("file:///android_asset/html/test.html")
+        }else if (action== ACTION_PIE){
+            my_web.loadUrl("file:///android_asset/html/statistics.html")
+            t = "统计";
+        }
         var iv_back=root.findViewById<ImageView>(R.id.iv_back)
         var tv_title=root.findViewById<TextView>(R.id.tv_title)
-        tv_title.setText(R.string.edit_text)
+            tv_title.setText(t)
         }
     var callback: ChartCallBack = object : ChartCallBack {
         override fun URLLoadFinished() {
@@ -131,16 +137,41 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
         var cache=0
         var err=0
         var commit =0
+        // 获取今天0点
+        var calandar = Calendar.getInstance();
+        calandar.setTime(Date());
+        calandar.set(Calendar.HOUR_OF_DAY,0);
+        calandar.set(Calendar.MINUTE,0)
+        calandar.set(Calendar.SECOND,0);
+        var today = calandar.timeInMillis;
+        var hours = Date().hours;
+        if (0<=hours && hours<9){// 按照前一天算
+            today = today - (24*60*60*1000);
+        }
         for(item in taskList){
+            if (item.scheduler_time!=today){
+                continue;
+            }
             if(item.state== Settings.TASK_UNSTART){
-                var sch=Settings.SDF_DATE.format(item.scheduler_time)
-                var today=Settings.SDF_DATE.format(System.currentTimeMillis())
-                if(item.create_time == (0.toLong())&&(sch<today)){
-                    delay++
-                }else{
-                    unstart++
+                if (0<=hours && hours<9){// 晚班时间：白班延期
+                    if (item.form_type == 1){
+                        delay++
+                    }else{
+                        unstart++
+                    }
+                }else if (9<=hours && hours<18){// 白班时间：晚班延期
+                    if (item.form_type == 1){
+                        unstart++
+                    }else{
+                        delay++
+                    }
+                }else if (18<=hours){// 晚班时间：白班延期
+                    if (item.form_type == 1){
+                        delay++
+                    }else{
+                        unstart++
+                    }
                 }
-
             }
             if(item.state== Settings.TASK_COMMIT ||item.state== Settings.TASK_ERR_OVER){
                 commit++

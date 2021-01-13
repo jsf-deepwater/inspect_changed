@@ -12,7 +12,7 @@
  <body>
  <center>
   <form id="formValue">
-   <table style="width: 100%" id="tb"></table>
+   <div style="width: 100%" id="tb"></div>
   </form>
   <div style="text-align: center;margin-top: 10px">
    <a id="save" class="easyui-linkbutton" style="width:120px;margin:5px" onclick="saveForm()">保存</a>
@@ -33,13 +33,6 @@
  var isStart = false;
  var jsonContent = null;
  // 页面加载就执行的方法，由android控制（但会执行两次）
-  function show_pie(json) {
-  if (isStart) {
-   return ;
-  }
-  isStart = true;
-//...
- }
  function edit_task(json) {
   if (isStart) {
    return ;
@@ -79,88 +72,72 @@
     let json = JSON.parse(content);
     let rows = json.rows;
     jsonContent = rows;
-    // 获取每行有多少人列的最小公倍数，为后续计算td跨列做准备
-    let arr = new Array();
+	
     for (let i=0;i<rows.length;i++){
-      arr.push(rows[i].length);
-    }
-    const c = smallestCommonMultiple(arr);
-
-    for (let i=0;i<rows.length;i++){
-      let _tr = $("<tr></tr>");
-      $("#tb").append($(_tr));
+	let _row = $("<div class='row'></div>");
+	
+      $("#tb").append($(_row));
 
       let columns = rows[i];
       const l = columns.length;
       if (l<=0){
         continue ;
       }
+	  var marginTopArr = new Array();
+      let totalWidth = 0;
       for(let j=0;j<l;j++){
         let obj = columns[j];
+        let w;
+        if (j == l-1 && j!=0){// 最后一个等于 1减去前面之和
+          w = 1-totalWidth;
+        }else {
+          w = obj.width;
+        }
+        totalWidth += parseFloat(obj.width);
         let tdHtml = "";
-        tdHtml += "<td colspan='"+c/l+"'><label style='margin-right:50px'>"+obj.title+"</label>";
+        tdHtml += "<div class='column' style='width:"+w*100+"%'>";
         if (obj.type == "text"){
-          tdHtml += "<input type='text' name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-textbox'/>"
+		  tdHtml += "<input type='text' name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-textbox' style='width: 90%;'/>"
+		  marginTopArr.push(obj.jsonName);
         }else if (obj.type == 'textArea'){
-          tdHtml += "<textarea type='text' name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-textbox' data-options='multiline:true' style='height: 50px' />"
+          tdHtml += "<textarea type='text' name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-textbox' data-options='multiline:true' style='width: 90%;height: 100%' />"
         }else if (obj.type == 'radio'){
           for (let k=0;k<obj.selectOption.length;k++){
-            tdHtml += "<input type='radio' name='"+obj.jsonName+"' value='"+obj.selectOption[k]+"'/>"+obj.selectOption[k];
+            tdHtml += "<input style='margin-top: 23px' type='radio' name='"+obj.jsonName+"' value='"+obj.selectOption[k]+"'/>"+obj.selectOption[k];
           }
         }else if (obj.type == 'checkbox'){
           for (let k=0;k<obj.selectOption.length;k++){
-            tdHtml += "<input type='checkbox' name='"+obj.jsonName+"' value='"+obj.selectOption[k]+"'/>"+obj.selectOption[k];
-            //tdHtml += "<input type='checkbox' name='"+obj.jsonName+"' value='"+obj.selectOption[k]+"' class='easyui-checkbox'/>"+obj.selectOption[k];
+            tdHtml += "<input style='margin-top: 23px' type='checkbox' name='"+obj.jsonName+"' value='"+obj.selectOption[k]+"'/>"+obj.selectOption[k];
           }
         }else if (obj.type == 'select'){
-          tdHtml += "<select name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-combobox' style='width: 160px'>"
+          tdHtml += "<select name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-combobox' data-options='editable:false' style='width: 160px'>"
           let selectOption = obj.selectOption;
           for(let i=0;i<selectOption.length;i++){
             tdHtml += "<option value='"+selectOption[i]+"'>"+selectOption[i]+"</option>";
           }
-          tdHtml += "</select>"
+          tdHtml += "</select>";
+		  marginTopArr.push(obj.jsonName);
         }else if (obj.type == "title"){
-          tdHtml = "<td colspan='"+c/l+"' align='center'><label style='margin-right:10px'><font style='font-size:"+obj.size+"'>"+obj.title+"</font></label>";
+          tdHtml += "<label style='line-height: 60px'><font style='font-size:"+obj.size+"'>"+obj.title+"</font></label>";
         }
-        tdHtml += "</td>";
-        $(_tr).append(tdHtml);
+        tdHtml += "</div>";
+        $(_row).append(tdHtml);
         $.parser.parse();
+		marginTop(marginTopArr);
       }
     }
   }
 
-  //算法：利用最大公约数求两整数的最小公倍数
-  function twoSmallestCommonMultiple(a,b){
-    var c=mostCommonDivisor(a,b);
-    return a*b/c;
-  }
-  //算法：辗转相减法求两个整数的最大公约数
-  function mostCommonDivisor(a,b){
-    var c=Math.min(a,b);
-    a=Math.max(a,b);
-    b=c;
-    if(b===0){
-      return  alert("error,please input a number bigger than zero");
+  
+  // 手动给easyui加margin-top
+  function marginTop(marginTopArr) {
+    if (marginTopArr==null || marginTopArr.length==0){
+      return ;
     }
-    var c=a-b;
-    while(c>0){
-      a=Math.max(b,c);
-      b=Math.min(b,c);
-      c=a-b;
+    for (let i=0;i<marginTopArr.length;i++){
+      let n = $("#"+marginTopArr[i]).next();
+      $(n).css("margin-top","16px");
     }
-    return b;
-  }
-  //使用函数调用和递推的方式求数组所有元素的最小公倍数
-  function smallestCommonMultiple(arr){
-    if(arr.length<2){
-      return arr[0];
-    }
-    var a=0;
-    var result=1;
-    for(var i=0;i<arr.length;i++){
-      result=twoSmallestCommonMultiple(result,arr[i]);
-    }
-    return result;
   }
 
   function showContentVal(edit_content) {
@@ -216,13 +193,14 @@
   function commitForm(){
    let jsonObject = getData();
    jsonObject.state = 3;
-   window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
+   window.control.onTaskEdit(JSON.stringify(jsonObject));
   }
   // 异常提交
   function checkForm(){
    let checkUserId = $("#checkUser").combobox('getValue');
    if(checkUserId==null || checkUserId==""){
     $.messager.alert('提示','请选择审核人');
+    return ;
    }
    let checkUserName = $("#checkUser").combobox('getText');
    $.messager.confirm('提示','确定要将异常信息提交给'+checkUserName+'吗？',function(r){
@@ -230,14 +208,15 @@
      let jsonObject = getData();
      jsonObject.state = 2;
      jsonObject.check_user = checkUserId;
-     window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
+     window.control.onTaskEdit(JSON.stringify(jsonObject));
     }
    });
   }
   // 审核确认
   function checkForm1(){
+   let jsonObject = getData();
    jsonObject.state = 4;
-   window.control.onTaskEdit("edit_task:"+JSON.stringify(jsonObject));
+   window.control.onTaskEdit(JSON.stringify(jsonObject));
   }
   // 获取填写表单的值，并按照原有格式组装
   function getData(status){

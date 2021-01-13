@@ -1,0 +1,81 @@
+<html>
+<body>
+<div id="d1" style="width: 100%;height: 100px;)">
+    <div style="width: 100%;height: 100%" id="chart1"></div>
+</div>
+</body>
+<script src="../easyui/jquery.min.js"></script>
+<script src="../easyui/jquery.easyui.min.js"></script>
+<script src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/echarts.min.js"></script>
+<script>
+  let isStart = false;
+  function show_pie(json) {
+    if (isStart) {
+      return ;
+    }
+    isStart = true;
+<!--    alert(JSON.stringify(json));-->
+    initChart(json);
+  }
+
+  init();
+
+  function init() {
+    $("#d1").css("height",$(document).height()-81+"px");
+  }
+
+  function initChart(json){
+    let opt = {
+      id:"chart1",
+      values:[json["unstart"],json["cache"],json["err"],json["commit"],json["delay"]],
+<!--      values:[1,2,3,4,5],-->
+      title:'当日计划排期完成情况',
+      legend:['未开始', '草稿','异常','已完成','延期']
+    };
+    commonPie(opt);
+  }
+
+  // 通用饼状图
+  function commonPie(opt) {
+    let id = opt.id;
+    let color = opt.color;
+    let title = opt.title;
+
+    // 赋值
+    let seriesData = [];
+    for (let i = 0; i < opt.values.length; i++) {
+      let e = {};
+      e.name = opt.legend[i];
+      e.value = opt.values[i];
+      seriesData.push(e);
+    }
+    let myChart = echarts.init(document.getElementById(id));
+    // 指定图表的配置项和数据
+    let option = {
+      title: {
+        text: title,
+        y:'top',
+        x:'center'
+      },
+      tooltip: {
+        formatter: '{b}: {c} ({d}%)'
+      },
+      series: [{
+        type: 'pie',
+        radius: '60%',
+        avoidLabelOverlap: false,
+        label: {
+          normal: {
+            formatter: '{b}：{c}({d}%)'
+          }
+        },
+        data: seriesData
+      }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+  }
+</script>
+</html>
