@@ -22,6 +22,7 @@ import phy.jsf.util.MyWebView
 import x.datautil.L
 import x.frame.BaseActivity
 import x.frame.BaseFragment
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
@@ -79,6 +80,8 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
                             json.put("content",task!!.content)
                             json.put("edit_content",task!!.edit_content)
                             json.put("state",task!!.state)
+                            json.put("scheduler_time",task!!.scheduler_time);
+                            json.put("type",task!!.form_type);
 
                             var users=ArrayList<User>()
                             DbManager.getDbManager(mActivity).getManagerUser(users)
@@ -143,6 +146,7 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
         calandar.set(Calendar.HOUR_OF_DAY,0);
         calandar.set(Calendar.MINUTE,0)
         calandar.set(Calendar.SECOND,0);
+        calandar.set(Calendar.MILLISECOND, 0);
         var today = calandar.timeInMillis;
         var hours = Date().hours;
         if (0<=hours && hours<9){// 按照前一天算

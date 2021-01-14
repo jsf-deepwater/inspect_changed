@@ -56,11 +56,13 @@ public class MyWebView extends WebView {
      */
     @Override
     public void scrollTo(int x, int y) {
-        super.scrollTo(0, 0);
+//        super.scrollTo(0, 0);
+        super.scrollTo(x, y);
     }
 
     @Override
     protected boolean overScrollBy(int deltaX, int deltaY, int scrollX, int scrollY, int scrollRangeX, int scrollRangeY, int maxOverScrollX, int maxOverScrollY, boolean isTouchEvent) {
-        return false;
+        return super.overScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX, scrollRangeY, maxOverScrollX, maxOverScrollY,isTouchEvent);
+//        return false;
     }
 }

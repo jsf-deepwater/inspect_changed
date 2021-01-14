@@ -240,7 +240,7 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
             if(data!=null){
                 L.e("scan did:${data!!.getStringExtra(QRScanActivity.EXTRA_SCAN_RESULT)}")
                 var json= JSONObject(data!!.getStringExtra(QRScanActivity.EXTRA_SCAN_RESULT))
-                if (curTask!!.device_id.equals(json.get("id"))){
+                if (curTask!!.device_id.equals(json.get("code"))){
                     enable_edit_page(curTask!!)
                     return ;
                 }

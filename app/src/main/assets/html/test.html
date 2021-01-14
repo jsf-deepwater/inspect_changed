@@ -4,9 +4,8 @@
  <link rel="stylesheet" href="../easyui/themes/icon.css" />
  <link rel="stylesheet" href="../css/common.css" />
  <style>
-   table {width: 100%;margin: 0 auto;}
-   tr {height: 60px}
-   table td{border:1px solid #95b8e7;padding-left: 30px}
+   .row{width: 100%;height: 60px;border: 1px solid #95b8e7}
+   .column{height: 100%;border-right: 1px solid #95b8e7;float: left;text-align: center;}
  </style>
 </head>
  <body>
@@ -42,6 +41,7 @@
   showCheckUser(json.checkList);
   showButton(json.state);
   showContentVal(json.edit_content);
+  showButtonTime(json.scheduler_time, json.type);
  }
 
  function showButton(state){
@@ -60,11 +60,46 @@
   }
  }
 
+ // 日期测试
+ function showButtonTime(time, type){
+   let now = new Date();
+   let hour = now.getHours();
+   let today = 0;
+   if(0<=hour && hour<9){
+       now.setHours(0);
+       now.setMinutes(0);
+       now.setSeconds(0);
+       now.setMilliseconds(0);
+       today = now.getTime() - 24*60*60*1000
+   }
+   if (time>today){// 计划日期大于今天，理论上进不来
+       // 禁止
+       $("#save,#commit,#checkDiv,#checkCommit1").hide();
+       return ;
+   }
+   if (time<today){// 计划日期小于今天
+       // 禁止
+       $("#save,#commit,#checkDiv,#checkCommit1").hide();
+       return ;
+   }
+   if (0<=hour && hour<9 && type==1){// 晚班时间 白班计划
+       // 禁止
+       $("#save,#commit,#checkDiv,#checkCommit1").hide();
+   }else if(9<= hour && hour<18 && type==2){// 白班时间 晚班计划
+       // 禁止
+       $("#save,#commit,#checkDiv,#checkCommit1").hide();
+   }else if(18<=hour && type==1){// 晚班时间 白班计划
+       // 禁止
+       $("#save,#commit,#checkDiv,#checkCommit1").hide();
+   }
+ }
+
  function showCheckUser(checkList){
   $("#checkUser").combobox({
     data:checkList,
     valueField:'user_id',
-    textField:'user_name'
+    textField:'user_name',
+    editable:false
   });
  }
 
