@@ -272,7 +272,7 @@ class QRScanActivity: BaseActivity() {
             beepAndVibrate()
             try {
                 Log.e("TAG", "scan:$result")
-                Toast.makeText(this,result, Toast.LENGTH_LONG).show()
+//                Toast.makeText(this,result, Toast.LENGTH_LONG).show()
 //                mActivity.finish()
                 //var context=mActivity as MainActivity
                 //context.setScanRes(result!!)

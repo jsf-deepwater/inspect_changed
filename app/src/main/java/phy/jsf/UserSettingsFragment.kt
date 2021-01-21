@@ -73,13 +73,19 @@ class UserSettingsFragment: BaseFragment(), BaseActivity.OnAction {
         }
         progressDialog!!.show()
     }
+    var last_sync_time:Long=0
+    var last_sync_res=false
     val mReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             var res=intent!!.getBooleanExtra(DataService.EXTRA_SERVER_UPDATE_RES,false)
             if (progressDialog != null){
                 progressDialog!!.dismiss()
             }
-            Toast.makeText(mActivity,if(res)  R.string.sync_ok else R.string.sync_err, Toast.LENGTH_SHORT).show()
+            if(System.currentTimeMillis()-last_sync_time>1000*60*3||last_sync_res!=res){
+                last_sync_time=System.currentTimeMillis()
+                last_sync_res=res
+                Toast.makeText(mActivity,if(res)  R.string.sync_ok else R.string.sync_err, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

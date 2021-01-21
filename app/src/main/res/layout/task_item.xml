@@ -45,10 +45,19 @@
     <TextView
         style="@style/task_content"
         android:id="@+id/tv_d_name_str"
+        android:layout_width="@dimen/double_content_width"
         android:text="@string/d_name"
         android:layout_toRightOf="@id/tv_d_name"
         android:layout_alignBottom="@id/tv_d_name"
+        />
+    <TextView
+        style="@style/task_desc"
+        android:layout_width="@dimen/double_content_width"
+        android:id="@+id/tv_task_day_night"
+        android:text="@string/day_night"
+        android:gravity="end"
         android:layout_below="@id/top_dividerLine"
+        android:layout_toRightOf="@id/tv_d_name_str"
         />
 
     <!-- task type-->
@@ -78,10 +87,22 @@
         />
     <TextView
         style="@style/task_content"
+        android:layout_width="@dimen/double_content_width"
         android:id="@+id/tv_task_name_str"
         android:text="@string/task_name"
         android:layout_alignBottom="@id/tv_task_name"
         android:layout_toRightOf="@id/tv_task_name"
+        />
+    <TextView
+        style="@style/task_desc"
+        android:layout_width="@dimen/double_content_width"
+        android:id="@+id/tv_task_state"
+        android:text="@string/type_err"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:layout_alignBottom="@id/tv_task_name"
+        android:gravity="end"
+        android:layout_toRightOf="@id/tv_task_name_str"
         />
     <!--scheduler time-->
     <TextView
@@ -121,23 +142,5 @@
         style="@style/horizontal_line"
         android:layout_below="@id/tv_scheduler_time"
         />
-    <TextView
-        style="@style/task_content"
-        android:layout_width="@dimen/double_content_width"
-        android:id="@+id/tv_task_day_night"
-        android:text="@string/day_night"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/bottom_dividerLine"
-        />
-    <TextView
-        style="@style/task_content"
-        android:layout_width="@dimen/double_content_width"
-        android:id="@+id/tv_task_state"
-        android:text="@string/type_err"
-        android:textColor="@color/red"
-        android:textStyle="bold"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/bottom_dividerLine"
-        android:visibility="gone"
-        />
+
 </RelativeLayout>

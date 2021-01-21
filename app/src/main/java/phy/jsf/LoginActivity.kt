@@ -45,13 +45,14 @@ class LoginActivity : BaseActivity() {
        intentFilter.addAction(DataService.ACTION_UPDATE_SERVER_OVER)
        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, intentFilter)
     }
+
     val mReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             var res=intent!!.getBooleanExtra(EXTRA_SERVER_UPDATE_RES,false)
             if (progressDialog != null){
                 progressDialog!!.dismiss()
+                Toast.makeText(mActivityReference.get(),if(res)  R.string.sync_ok else R.string.sync_err,Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(mActivityReference.get(),if(res)  R.string.sync_ok else R.string.sync_err,Toast.LENGTH_SHORT).show()
         }
     }
     fun encrypt(pwd:String):String{
@@ -129,6 +130,7 @@ class LoginActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver)
         if (codeTimer != null) {
             mSecureHandler.removeCallbacks(codeTimer)
         }

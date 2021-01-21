@@ -85,6 +85,7 @@ class DataService : BaseService() {
                 action_sync=true
                 pullUserList()
                 pullFormList()
+                pushAllForm()
             }
             if(ACTION_PUSH_TASK.equals(action)){
                 var task:Task=intent.getParcelableExtra(EXTRA_TASK)

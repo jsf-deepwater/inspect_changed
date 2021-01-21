@@ -35,6 +35,7 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
     }
 
     lateinit var my_web: MyWebView
+    lateinit var tv_title:TextView
     var task:Task?=null
     var action:String?=null
     interface ChartCallBack {
@@ -60,6 +61,27 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
         setView(root)
         return root
     }
+
+    /**
+     * 需要在fragment可见的时候刷新状态的操作都可以放在这里
+     */
+    override fun onVisible() {
+        super.onVisible()
+        update_by_action()
+    }
+
+    fun update_by_action(){
+        var t = "填写表单";
+        if(action == ACTION_FORM){
+            my_web.loadUrl("file:///android_asset/html/test.html")
+        }else if (action== ACTION_PIE){
+            my_web.loadUrl("file:///android_asset/html/statistics.html")
+            t = "统计";
+        }
+
+        tv_title.setText(t)
+    }
+
     fun setView(root: View){
         my_web= root.findViewById(R.id.web)
         val wSet: WebSettings = my_web.getSettings()
@@ -69,7 +91,8 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
         my_web.setHorizontalScrollBarEnabled(false)
         var jsonItf=JsInteration(mActivity)
         my_web.addJavascriptInterface(jsonItf, "control") //传递对象进行交互
-
+        var iv_back=root.findViewById<ImageView>(R.id.iv_back)
+        tv_title=root.findViewById<TextView>(R.id.tv_title)
         my_web.setWebChromeClient(object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, progress: Int) {
                 if (progress == 100) {
@@ -114,16 +137,7 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
                 }
             }
         })
-        var t = "填写表单";
-        if(action == ACTION_FORM){
-            my_web.loadUrl("file:///android_asset/html/test.html")
-        }else if (action== ACTION_PIE){
-            my_web.loadUrl("file:///android_asset/html/statistics.html")
-            t = "统计";
-        }
-        var iv_back=root.findViewById<ImageView>(R.id.iv_back)
-        var tv_title=root.findViewById<TextView>(R.id.tv_title)
-            tv_title.setText(t)
+
         }
     var callback: ChartCallBack = object : ChartCallBack {
         override fun URLLoadFinished() {
@@ -252,5 +266,13 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
         }
     }
 
+    /**
+     * 返回键,这里在 top_navigation_bar 中调用此方法,不要删除
+     *
+     * @param back
+     */
+    override fun onBackPressed(back: View?) {
+        super.onBackPressed(back)
 
     }
+}
