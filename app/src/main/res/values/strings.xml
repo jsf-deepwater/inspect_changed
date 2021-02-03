@@ -29,7 +29,7 @@
     <string name="task_name">表单名称</string>
     <string name="task_type">表单类别</string>
     <string name="task_scheduler_time">计划时间</string>
-    <string name="task_complete_time">完成时间</string>
+    <string name="task_complete_time">更新时间</string>
     <string name="status">状态</string>
     <string name="form_state">表单状态</string>
     <string name="month">月度</string>
@@ -69,4 +69,6 @@
 
     <string name="task_pie">计划完成进度</string>
     <string name="dis_info">用户名：%s\n姓名：%s\n工号：%s\n</string>
+
+    <string name="status_2">状&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;态</string>
 </resources>

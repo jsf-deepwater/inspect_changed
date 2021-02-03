@@ -104,7 +104,7 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
                             json.put("edit_content",task!!.edit_content)
                             json.put("state",task!!.state)
                             json.put("scheduler_time",task!!.scheduler_time);
-                            json.put("type",task!!.form_type);
+                            json.put("form_day_night",task!!.form_day_night);
 
                             var users=ArrayList<User>()
                             DbManager.getDbManager(mActivity).getManagerUser(users)
@@ -122,7 +122,7 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
                             //add other content into json str.
                             //...
                             var jsonStr=json.toString()
-
+                            L.e("show form :${jsonStr}")
                             my_web.loadUrl(String.format(Locale.US, "javascript:edit_task(%s)", jsonStr))
                         }
                     }else if(action== ACTION_PIE){
@@ -254,6 +254,7 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
             }
             //save data.
             etask!!.upload_state=0
+            L.e("save :${etask}")
             DbManager.getDbManager(context).addTask(etask,false)
             //broadcast for upload to server.
             var upAction= Intent(context,DataService::class.java)

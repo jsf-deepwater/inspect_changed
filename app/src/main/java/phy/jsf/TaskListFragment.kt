@@ -13,7 +13,7 @@ import phy.jsf.WebViewFragment.Companion.EXTRAL_TASK_ITEM
 import phy.jsf.data.Task
 import phy.jsf.db.DbManager
 import phy.jsf.db.Settings
-import phy.jsf.db.Settings.TASK_ERR
+import phy.jsf.db.Settings.*
 import x.datautil.L
 import x.dialog.AlertDialog
 import x.frame.BaseActivity
@@ -403,10 +403,19 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
             var tv_complete_time_str=mView!!.findViewById<TextView>(R.id.tv_complete_time_str)
             var tv_task_day_night=mView!!.findViewById<TextView>(R.id.tv_task_day_night)
             var tv_task_state=mView!!.findViewById<TextView>(R.id.tv_task_state)
-            if(taskList[position].state==TASK_ERR){
+            /*if(taskList[position].state==TASK_ERR){
                 tv_task_state.visibility=View.VISIBLE
             }else{
                 tv_task_state.visibility=View.GONE
+            }*/
+            if(taskList[position].state==TASK_ERR){
+                tv_task_state.setText(R.string.type_err)
+            }else if(taskList[position].state==TASK_UNSTART){
+                tv_task_state.setText(R.string.type_unstart)
+            }else if(taskList[position].state==TASK_CACHE){
+                tv_task_state.setText(R.string.type_uncommit)
+            }else{
+                tv_task_state.setText(R.string.type_complete)
             }
             tv_index.text= (position+1).toString()
             tv_d_id_str.text=taskList[position].device_id
@@ -414,11 +423,19 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
             tv_task_type_str.text= Settings.TASK_TYPE[taskList[position].form_type-1]
             tv_task_name_str.text=taskList[position].form_name
             tv_scheduler_time_str.text=Settings.SDF_DATE.format(taskList[position].scheduler_time)
-            if(taskList[position].create_time!=(0.toLong())){
+            if(taskList[position].commit_time==0L || taskList[position].check_time==0L){
+                tv_complete_time_str.text=resources.getText(R.string.type_unstart)
+            }else if (taskList[position].commit_time>taskList[position].check_time){
+                tv_complete_time_str.text=Settings.SDF_DATE.format(taskList[position].commit_time)
+            }else{
+                tv_complete_time_str.text=Settings.SDF_DATE.format(taskList[position].check_time)
+            }
+            /*if(taskList[position].create_time!=(0.toLong())){
                 tv_complete_time_str.text=Settings.SDF_DATE.format(taskList[position].create_time)
             }else{
                 tv_complete_time_str.text=resources.getText(R.string.type_unstart)
-            }
+            }*/
+
 
             if(Settings.TASK_DAY==taskList[position].form_day_night){
                 tv_task_day_night.text=resources.getText(R.string.day_work)

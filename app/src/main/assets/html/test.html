@@ -44,9 +44,12 @@
   isStart = true;
   show(json.content);
   showCheckUser(json.checkList);
-  showButton(json.state);
+  // 在允许的时间范围内才可以显示按钮
+  let flag = showButtonTime(json.scheduler_time, json.form_day_night);
+  if (flag){
+    showButton(json.state);
+  }
   showContentVal(json.edit_content);
-  showButtonTime(json.scheduler_time, json.type);
  }
 
  function showButton(state){
@@ -72,36 +75,34 @@
  function showButtonTime(time, type){
    let now = new Date();
    let hour = now.getHours();
+   let _0to9 = false;
+   if(0<=hour && hour<9){
+    _0to9 = true;
+   }
    now.setHours(0);
    now.setMinutes(0);
    now.setSeconds(0);
    now.setMilliseconds(0);
    let today = 0;
-   if(0<=hour && hour<9){
+   if(_0to9){
        today = now.getTime() - 24*60*60*1000
    }else {
       today = now.getTime();
    }
    if (time>today){// 计划日期大于今天，理论上进不来
-       // 禁止
-       $("#save,#commit,#checkDiv,#checkCommit1").hide();
-       return ;
+       return false;
    }
    if (time<today){// 计划日期小于今天
-       // 禁止
-       $("#save,#commit,#checkDiv,#checkCommit1").hide();
-       return ;
+       return false;
    }
    if (0<=hour && hour<9 && type==1){// 晚班时间 白班计划
-       // 禁止
-       $("#save,#commit,#checkDiv,#checkCommit1").hide();
+       return false;
    }else if(9<= hour && hour<18 && type==2){// 白班时间 晚班计划
-       // 禁止
-       $("#save,#commit,#checkDiv,#checkCommit1").hide();
+       return false;
    }else if(18<=hour && type==1){// 晚班时间 白班计划
-       // 禁止
-       $("#save,#commit,#checkDiv,#checkCommit1").hide();
+       return false;
    }
+   return true;
  }
 
  function showCheckUser(checkList){
