@@ -7,9 +7,10 @@
     <TextView
         style="@style/task_desc"
         android:id="@+id/tv_d_id"
-        android:text="@string/d_index"
+        android:text="@string/d_index1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_width="60dp"
         />
     <EditText
         style="@style/task_content"
@@ -17,14 +18,17 @@
         android:hint="@string/d_index"
         android:layout_toRightOf="@id/tv_d_id"
         android:layout_alignBottom="@id/tv_d_id"
+        android:layout_width="100dp"
         />
     <!--device name-->
     <TextView
         style="@style/task_desc"
         android:id="@+id/tv_d_name"
-        android:text="@string/d_name"
+        android:text="@string/d_name1"
         android:layout_alignBottom="@id/tv_d_id"
         android:layout_toRightOf="@id/tv_d_id_str"
+        android:layout_marginLeft="100dp"
+        android:layout_width="60dp"
         />
     <EditText
         style="@style/task_content"
@@ -32,14 +36,17 @@
         android:hint="@string/d_name"
         android:layout_toRightOf="@id/tv_d_name"
         android:layout_alignBottom="@id/tv_d_name"
+        android:layout_width="100dp"
         />
     <!-- task name-->
     <TextView
         style="@style/task_desc"
         android:id="@+id/tv_task_name"
-        android:text="@string/task_name"
+        android:text="@string/task_name1"
         android:layout_alignBottom="@id/tv_d_name_str"
         android:layout_toRightOf="@id/tv_d_name_str"
+        android:layout_marginLeft="100dp"
+        android:layout_width="60dp"
         />
     <EditText
         style="@style/task_content"
@@ -47,6 +54,7 @@
         android:hint="@string/task_name"
         android:layout_alignBottom="@id/tv_task_name"
         android:layout_toRightOf="@id/tv_task_name"
+        android:layout_width="100dp"
         />
 
 
@@ -54,8 +62,9 @@
     <TextView
         style="@style/task_desc"
         android:id="@+id/tv_d_building"
-        android:text="@string/building"
+        android:text="@string/building1"
         android:layout_below="@id/tv_d_name"
+        android:layout_width="60dp"
         />
     <EditText
         style="@style/task_content"
@@ -63,14 +72,17 @@
         android:hint="@string/building"
         android:layout_toRightOf="@id/tv_d_building"
         android:layout_alignBottom="@id/tv_d_building"
+        android:layout_width="100dp"
         />
     <!--device floor-->
     <TextView
         style="@style/task_desc"
         android:id="@+id/tv_d_floor"
-        android:text="@string/floor"
+        android:text="@string/floor1"
         android:layout_toRightOf="@id/tv_d_building_str"
         android:layout_alignBottom="@id/tv_d_building"
+        android:layout_marginLeft="100dp"
+        android:layout_width="60dp"
         />
     <EditText
         style="@style/task_content"
@@ -78,14 +90,17 @@
         android:hint="@string/floor"
         android:layout_toRightOf="@id/tv_d_floor"
         android:layout_alignBottom="@id/tv_d_floor"
+        android:layout_width="100dp"
         />
     <!--device room-->
     <TextView
         style="@style/task_desc"
         android:id="@+id/tv_d_room"
-        android:text="@string/room"
+        android:text="@string/room1"
         android:layout_toRightOf="@id/tv_d_floor_str"
         android:layout_alignBottom="@id/tv_d_building"
+        android:layout_marginLeft="100dp"
+        android:layout_width="60dp"
         />
     <EditText
         style="@style/task_content"
@@ -93,7 +108,7 @@
         android:hint="@string/room"
         android:layout_toRightOf="@id/tv_d_room"
         android:layout_alignBottom="@id/tv_d_room"
-
+        android:layout_width="100dp"
         />
     <!-- task type-->
 <!--
@@ -116,7 +131,7 @@
     <TextView
         style="@style/task_desc"
         android:id="@+id/tv_state"
-        android:text="@string/form_state"
+        android:text="@string/form_state1"
         android:layout_below="@id/tv_d_building"
         android:layout_alignParentLeft="true"
         />
@@ -168,7 +183,7 @@
     <TextView
         style="@style/task_desc"
         android:id="@+id/tv_type"
-        android:text="@string/task_type"
+        android:text="@string/task_type1"
         android:layout_below="@id/tv_state"
         android:layout_alignParentLeft="true"
         />
