@@ -62,10 +62,10 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         tv_none=root.findViewById<TextView>(R.id.tv_none)
         tv_none.isClickable=true
         tv_none.setOnClickListener(tv_Listener)
-        var btn_search=root.findViewById<Button>(R.id.btn_search)
+        /*var btn_search=root.findViewById<Button>(R.id.btn_search)
         btn_search.setOnClickListener(View.OnClickListener {
             show_search_dialog()
-        })
+        })*/
     }
 
     var dialogFilter:AlertDialog?=null
@@ -339,7 +339,8 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         var did=getDidFromScanRes(scanResTxt)
         if(TextUtils.isEmpty(scanResTxt)){
             L.e("get all task")
-            DbManager.getDbManager(mActivity).getAllTask(taskList,Settings.curUser)
+            //DbManager.getDbManager(mActivity).getAllTask(taskList,Settings.curUser)
+            DbManager.getDbManager(mActivity).getAllTask1(taskList,getPlanTime())
         }else{
 //            L.e("get  task by did:$did")
 //            DbManager.getDbManager(mActivity).getTaskByDeviceId(did, taskList)
@@ -368,7 +369,8 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
                 DbManager.getDbManager(mActivity).getDelayTask(taskList)
             }
             //other.
-            DbManager.getDbManager(mActivity).getTaskByLike(scanResTxt, taskList)
+//            DbManager.getDbManager(mActivity).getTaskByLike(scanResTxt, taskList)
+            DbManager.getDbManager(mActivity).getTaskByLike1(scanResTxt, taskList, getPlanTime())
 
         }
         for(task in taskList){
@@ -381,6 +383,21 @@ class TaskListFragment:BaseFragment(),BaseActivity.OnAction{
         }else{
             tv_none.visibility=View.GONE
         }
+    }
+
+    fun getPlanTime():Long{
+        var calendar = Calendar.getInstance();
+        calendar.setTime(Date());
+        var hour = calendar.get(Calendar.HOUR_OF_DAY);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        if (hour < 9){
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            return calendar.timeInMillis - 24*60*60*1000;
+        }
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        return calendar.timeInMillis;
     }
 
     override fun onGetAction(intent: Intent?) {

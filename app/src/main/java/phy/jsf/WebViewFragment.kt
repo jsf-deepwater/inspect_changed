@@ -105,11 +105,51 @@ class WebViewFragment: BaseFragment(), BaseActivity.OnAction  {
                             json.put("state",task!!.state)
                             json.put("scheduler_time",task!!.scheduler_time);
                             json.put("form_day_night",task!!.form_day_night);
+                            json.put("code",task!!.device_id);
+
+
+                            json.put("equipmentName", task!!.device_name)
+                            json.put("dateStr", Settings.SDF_DATE.format(task!!.scheduler_time))
+                            json.put("type", task!!.form_type)
+                            var userList:ArrayList<User> = ArrayList();
+                            DbManager.getDbManager(mActivity).getAllUser(userList)
+                            json.put("formUser","无")
+                            if(userList.size>0){
+                                for(user in userList){
+                                    if(user.user_id!=null && user.user_id.equals(task!!.user_id) ){
+                                        json.put("formUser",user.dis_name)
+                                        break
+                                    }
+                                }
+                            }
+                            json.put("formCommitTimeStr","无")
+                            if (task!!.commit_time!=0L){
+                                json.put("formCommitTimeStr",Settings.SDF_DATE.format(task!!.commit_time))
+                            }
+                            json.put("formCheckUser","无")
+                            if(userList.size>0){
+                                for(user in userList){
+                                    if(user.user_id!=null && user.user_id.equals(task!!.check_user) ){
+                                        json.put("formCheckUser",user.dis_name)
+                                        break
+                                    }
+                                }
+                            }
+                            json.put("formCheckTimeStr","无")
+                            if (task!!.check_time!=0L){
+                                json.put("formCheckTimeStr",Settings.SDF_DATE.format(task!!.check_time))
+                            }
+                            json.put("location",task!!.building+task!!.device_floor+task!!.device_room)
+
 
                             var users=ArrayList<User>()
                             DbManager.getDbManager(mActivity).getManagerUser(users)
                             if(users.size>0){
                                 var ja=JSONArray()
+                                var j=JSONObject()
+                                j.put("user_id", "-1")
+                                j.put("user_name", "请选择审核人")
+                                ja.put(j);
                                 for(user in users){
                                     var jo=JSONObject()
                                     jo.put("user_id",user.user_id)

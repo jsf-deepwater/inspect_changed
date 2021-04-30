@@ -17,14 +17,14 @@
             android:layout_centerInParent="true"
             android:textSize="@dimen/sizeStandard"
             android:text="@string/task_list" />
-        <Button
+        <!--<Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:background="@drawable/bt_rect"
             android:id="@+id/btn_search"
             android:text="@string/search"
-            />
+            />-->
     </RelativeLayout>
  <SearchView
         android:id="@+id/sv_task"

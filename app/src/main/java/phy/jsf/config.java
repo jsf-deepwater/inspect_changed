@@ -1,5 +1,5 @@
 package phy.jsf;
 
 public class config {
-    public static boolean TEST_FLAG=true;
+    public static boolean TEST_FLAG=false;
 }

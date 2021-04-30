@@ -6,10 +6,42 @@
  <style>
    .row{width: 100%;height: 60px;border: 1px solid #95b8e7}
    .column{height: 100%;border-right: 1px solid #95b8e7;float: left;text-align: center;}
+   .info-left{width: 24%;float: left;text-align: left}
+   .info-right{width: 24%;float: left;text-align: right}
+   table td{border:1px solid #95b8e7;text-align:center}
  </style>
 </head>
  <body>
  <center>
+  <div id="title-div" style="width: 100%;text-align: center"></div>
+  <div id="info" style="width: 100%;margin: 10px auto">
+      <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+              <td>值班员：</td>
+              <td data='formUser'></td>
+              <td>提交时间：</td>
+              <td data='formCommitTimeStr'></td>
+          </tr>
+          <tr>
+              <td>审核人：</td>
+              <td data='formCheckUser'></td>
+              <td>审核时间：</td>
+              <td data='formCheckTimeStr'></td>
+          </tr>
+          <tr>
+              <td>设备位置：</td>
+              <td data='location'></td>
+              <td>维护状态：</td>
+              <td data='state'></td>
+          </tr>
+          <tr>
+              <td>设备位置：</td>
+              <td data='location'></td>
+              <td>维护类型：</td>
+              <td data='type'></td>
+          </tr>
+      </table>
+  </div>
   <div id="loading">正在加载，请稍后......</div>
   <form id="formValue">
    <div style="width: 100%" id="tb"></div>
@@ -18,8 +50,8 @@
    <a id="save" class="easyui-linkbutton" style="width:120px;margin:5px;display:none" onclick="saveForm()">保存</a>
    <a id="commit" class="easyui-linkbutton" style="width:120px;margin:5px;display:none" onclick="commitForm()">提交</a>
    <div style="float:right;display:none" id="checkDiv">
-    <a id="checkCommit" class="easyui-linkbutton" style="width:120px;margin:5px" onclick="checkForm()">异常提交</a>
     <input id="checkUser"/>
+    <a id="checkCommit" class="easyui-linkbutton" style="width:120px;margin:5px" onclick="checkForm()">异常提交</a>
    </div>
    <a id="checkCommit1" class="easyui-linkbutton" style="width:120px;margin:5px;display:none" onclick="checkForm1()">审核确认</a>
   </div>
@@ -50,6 +82,7 @@
     showButton(json.state);
   }
   showContentVal(json.edit_content);
+  showBaseInfo(json);
  }
 
  function showButton(state){
@@ -112,6 +145,7 @@
     textField:'user_name',
     editable:false
   });
+  $('#checkUser').combobox('select','-1');
  }
 
   function show(content) {
@@ -133,15 +167,17 @@
       let totalWidth = 0;
       for(let j=0;j<l;j++){
         let obj = columns[j];
-        let w;
+        /*let w;
         if (j == l-1 && j!=0){// 最后一个等于 1减去前面之和
           w = 1-totalWidth;
+        }else if(l==1){
+          w = 1;
         }else {
           w = obj.width;
         }
-        totalWidth += parseFloat(obj.width);
+        totalWidth += parseFloat(obj.width);*/
         let tdHtml = "";
-        tdHtml += "<div class='column' style='width:"+w*100+"%'>";
+        tdHtml += "<div class='column' style='width:"+obj.width+"%'>";
         if (obj.type == "text"){
 		  tdHtml += "<input type='text' name='"+obj.jsonName+"' id='"+obj.jsonName+"' class='easyui-textbox' style='width: 90%;'/>"
 		  marginTopArr.push(obj.jsonName);
@@ -229,6 +265,96 @@
       }
     }
   }
+
+ // 页面上部展示基本信息
+ function showBaseInfo1(entity){
+    let type = null;
+    if (entity.type == 1){
+      type = '月度';
+    }else if (entity.type == 2){
+      type = '季度';
+    }else if (entity.type == 3){
+      type = '年度';
+    }
+    $("#title-div").html("<h1>"entity.dateStr+entity.equipmentName +"（"+entity.code+"）"+ entity.dateStr + type + "维护保养记录</h1>");
+
+    $("td[data='formUser']").html(entity.formUser);
+    $("td[data='formCommitTimeStr']").html(entity.formCommitTimeStr);
+
+    if (entity.formCheckUser==null){
+      $("td[data='formCheckUser']").html("无");
+    }else {
+      $("td[data='formCheckUser']").html(entity.formCheckUser);
+    }
+    if (entity.formCheckTimeStr == null){
+      $("td[data='formCheckTimeStr']").html("无");
+    }else {
+      $("td[data='formCheckTimeStr']").html(entity.formCheckTimeStr);
+    }
+    $("td[data='location']").html(entity.location);
+    if (entity.state==0){
+      $("td[data='state']").html("未开始");
+    }else if (entity.state == 1){
+      $("td[data='state']").html("草稿");
+    }else if (entity.state == 2){
+      $("td[data='state']").html("异常提交");
+    }else if (entity.state == 3){
+      $("td[data='state']").html("已提交");
+    }else if (entity.state == 4){
+      $("td[data='state']").html("异常完成");
+    }else if (entity.state == 5){
+      $("td[data='state']").html("延期");
+    }
+    $("td[data='type']").html(type);
+  }
+
+  function showBaseInfo1(entity){
+    let type = null;
+    if (entity.type == 1){
+      type = '月度';
+    }else if (entity.type == 2){
+      type = '季度';
+    }else if (entity.type == 3){
+      type = '年度';
+    }
+    $("#title-div").html("<h1>"entity.dateStr+entity.equipmentName +"（"+entity.code+"）"+ entity.dateStr + type + "维护保养记录</h1>");
+    $("#info").append("<div class='info-right'>值班员：</div>");
+    $("#info").append("<div class='info-left'>"+entity.formUser+"</div>");
+    $("#info").append("<div class='info-right'>提交时间：</div>");
+    $("#info").append("<div class='info-left'>"+entity.formCommitTimeStr+"</div>");
+    $("#info").append("<div class='info-right'>审核人：</div>");
+    if (entity.formCheckUser==null){
+      $("#info").append("<div class='info-left'>无</div>");
+    }else {
+      $("#info").append("<div class='info-left'>"+entity.formCheckUser+"</div>");
+    }
+    $("#info").append("<div class='info-right'>审核时间：</div>");
+    if (entity.formCheckTimeStr == null){
+      $("#info").append("<div class='info-left'>无</div>");
+    }else {
+      $("#info").append("<div class='info-left'>"+entity.formCheckTimeStr+"</div>");
+    }
+    $("#info").append("<div class='info-right'>设备位置：</div>");
+    $("#info").append("<div class='info-left'>"+entity.location+"</div>");
+    $("#info").append("<div class='info-right'>维护状态：</div>");
+    if (entity.state==0){
+      $("#info").append("<div class='info-left'>未开始</div>");
+    }else if (entity.state == 1){
+      $("#info").append("<div class='info-left'>草稿</div>");
+    }else if (entity.state == 2){
+      $("#info").append("<div class='info-left'>异常提交</div>");
+    }else if (entity.state == 3){
+      $("#info").append("<div class='info-left'>已提交</div>");
+    }else if (entity.state == 4){
+      $("#info").append("<div class='info-left'>异常完成</div>");
+    }else if (entity.state == 5){
+      $("#info").append("<div class='info-left'>延期</div>");
+    }
+    $("#info").append("<div class='info-right'>维护类型：</div>");
+    $("#info").append("<div class='info-left'>"+type+"</div>");
+    $("#info").append("<div style='clear: both'></div>");
+  }
+
   // 保存
   function saveForm(){
    let jsonObject = getData();
@@ -244,7 +370,7 @@
   // 异常提交
   function checkForm(){
    let checkUserId = $("#checkUser").combobox('getValue');
-   if(checkUserId==null || checkUserId==""){
+   if(checkUserId==null || checkUserId=="" || checkUserId=="-1"){
     $.messager.alert('提示','请选择审核人');
     return ;
    }

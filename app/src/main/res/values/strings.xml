@@ -17,7 +17,7 @@
     <string name="save_failed">抱歉，无法连接到服务器！</string>
 
     <!--new content-->
-    <string name="task_list">表单总览</string>
+    <string name="task_list">任务总览</string>
     <string name="search">搜索</string>
     <string name="task_none">未找到任务！</string>
     <string name="user_settings">用户信息</string>

@@ -19,6 +19,7 @@ import static phy.jsf.db.DbAttrs.C_PWD;
 import static phy.jsf.db.DbAttrs.C_REMARK;
 import static phy.jsf.db.DbAttrs.C_ROLE;
 import static phy.jsf.db.DbAttrs.C_R_USER_ID;
+import static phy.jsf.db.DbAttrs.C_SCAN_TIME;
 import static phy.jsf.db.DbAttrs.C_STATUS;
 import static phy.jsf.db.DbAttrs.C_TASK_BUILDING;
 import static phy.jsf.db.DbAttrs.C_TASK_COMMIT_TIME;
@@ -83,7 +84,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 +C_CHECK_USER+" text,"
                 +C_TASK_COMMIT_TIME+" int,"
                 +C_CHECK_TIME+" int,"
-                +C_TASK_UPLOAD_STATE+" int"
+                +C_TASK_UPLOAD_STATE+" int,"
+                +C_SCAN_TIME+" int"
                 +");";
         sqLiteDatabase.execSQL(sql_task);
     }

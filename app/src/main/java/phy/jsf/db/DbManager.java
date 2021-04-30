@@ -29,6 +29,7 @@ import static phy.jsf.db.DbAttrs.C_PWD;
 import static phy.jsf.db.DbAttrs.C_REMARK;
 import static phy.jsf.db.DbAttrs.C_ROLE;
 import static phy.jsf.db.DbAttrs.C_R_USER_ID;
+import static phy.jsf.db.DbAttrs.C_SCAN_TIME;
 import static phy.jsf.db.DbAttrs.C_STATUS;
 import static phy.jsf.db.DbAttrs.C_TASK_BUILDING;
 import static phy.jsf.db.DbAttrs.C_TASK_COMMIT_TIME;
@@ -232,6 +233,20 @@ public class DbManager implements XDbManager {
         cursor.close();
     }
 
+    public void  getTaskByLike1(String key,ArrayList<Task> taskList, Long planTime){
+//        taskList.clear();
+        String sql="select * from "+T_TASK+" where "+
+                C_TASK_SCHEDULER_TIME + "= ? and "
+                + " ( "
+                + C_TASK_DEVICE_ID+" like ? or "+C_TASK_DEVICE_NAME+" like ? or "
+                + C_FORM_NAME +" like ? or "+C_TASK_BUILDING +" like ? or "
+                + C_TASK_DEVICE_FLOOR +" like ? or "+C_TASK_DEVICE_ROOM +" like ? "
+                + " ) ";
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sql,new String[]{String.valueOf(planTime),key,key,key,key,key,key});
+        getTaskFromCursor(taskList,cursor);
+        cursor.close();
+    }
+
     public void  getTaskByFormState(int state,ArrayList<Task> taskList){
 //        taskList.clear();
         String sql=null;
@@ -315,6 +330,16 @@ public class DbManager implements XDbManager {
         L.e("getAllTask,cnt:"+taskList.size());
         cursor.close();
     }
+    public void getAllTask1(ArrayList<Task> taskList,Long planTime){
+        taskList.clear();
+        String sql;
+        Cursor cursor;
+        sql="select * from "+T_TASK +" where "+C_TASK_SCHEDULER_TIME+" = ?";
+        cursor = dbHelper.getReadableDatabase().rawQuery(sql,new String[]{String.valueOf(planTime)});
+        getTaskFromCursor(taskList,cursor);
+        L.e("getAllTask,cnt:"+taskList.size());
+        cursor.close();
+    }
     public void getAllUser(ArrayList<User> userList){
         userList.clear();
         String sql="select * from "+T_USER;
@@ -364,6 +389,12 @@ public class DbManager implements XDbManager {
         }
         cursor.close();
         return user;
+    }
+
+    public void updateScanTime(String device_id, long scan_time){
+        ContentValues values = new ContentValues();
+        values.put(C_SCAN_TIME, scan_time);
+        dbHelper.getWritableDatabase().update(T_TASK, values, C_TASK_DEVICE_ID+"=?", new String[]{device_id});
     }
 
 

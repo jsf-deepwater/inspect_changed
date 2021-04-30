@@ -25,6 +25,7 @@ public class Task implements Parcelable {
     public long upload_time;
     public long commit_time;
     public int upload_state;
+    public long scan_time;
 
 
     public Task() {
@@ -52,6 +53,7 @@ public class Task implements Parcelable {
         upload_time = in.readLong();
         commit_time = in.readLong();
         upload_state=in.readInt();
+        scan_time=in.readLong();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -111,6 +113,7 @@ public class Task implements Parcelable {
         dest.writeLong(upload_time);
         dest.writeLong(commit_time);
         dest.writeInt(upload_state);
+        dest.writeLong(scan_time);
     }
 
 
@@ -192,5 +195,9 @@ public class Task implements Parcelable {
 
     public void setEdit_content(String edit_content) {
         this.edit_content = edit_content;
+    }
+
+    public void setScan_time(long scan_time) {
+        this.scan_time = scan_time;
     }
 }

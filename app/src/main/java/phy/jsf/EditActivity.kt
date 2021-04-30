@@ -46,8 +46,16 @@ class EditActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==REQUEST_QR_SCAN&&resultCode==RESULT_OK){
+            // 只需要扫码一次
+            if(task.scan_time!=0L){
+                scanQRstate=true
+                btn_scan_res(scanBtn)
+                return
+            }
             if(data!=null){L.e("scan did:${data!!.getStringExtra(EXTRA_SCAN_RESULT)}")}
             if(data!=null&&task.device_id.equals(data!!.getStringExtra(EXTRA_SCAN_RESULT))){
+                // 更新第一次扫码时间
+                DbManager.getDbManager(this).updateScanTime(task.device_id, System.currentTimeMillis());
                 scanQRstate=true
                 btn_scan_res(scanBtn)
             }else{

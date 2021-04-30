@@ -51,6 +51,8 @@ public class DbAttrs {
     public final static String C_CHECK_TIME="C_CHECK_TIME";
 
     public final static String C_TASK_UPLOAD_STATE="C_TASK_UPLOAD_STATE";
+    public final static String C_SCAN_TIME="C_SCAN_TIME";
+
 
 
 
